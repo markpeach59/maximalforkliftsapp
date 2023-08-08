@@ -30,6 +30,7 @@ import Rollers from "./rollers";
 import Pincode from "./pincode";
 import Displaywithcamera from "./displaywithcamera";
 import Liftybutton from "./liftybutton";
+import Stabiliser from "./stabiliser";
 
 import Controller from "./controller";
 
@@ -191,6 +192,8 @@ class ForkliftDetail extends Component {
 
       trolleys: forky.trolley,
       blinkeys: forky.blinkey,
+
+      stabilisers: forky.stabiliser,
       sideextractionbatterys: forky.sideextractionbattery,
 
       totalprice: initialbaseprice,
@@ -262,6 +265,8 @@ class ForkliftDetail extends Component {
 
       selectedTrolley: undefined,
       selectedBlinkey: undefined,
+
+      selectedStabiliser: undefined,
 
       selectedSideextractionbattery: undefined,
 
@@ -389,6 +394,7 @@ class ForkliftDetail extends Component {
 
     if (this.state.defaultroller && this.state.selectedRoller === undefined ) quote.roller = this.state.defaultroller;
 
+    if (this.state.selectedStabiliser ) quote.stabiliser = true;
 
     if (this.state.selectedDisplaywithcamera) quote.displaywithcamera = true;
     if (this.state.selectedLiftybutton) quote.liftybutton = true;
@@ -642,6 +648,13 @@ class ForkliftDetail extends Component {
     const newprice = this.state.totalprice + roller.price - oldprice;
 
     this.setState({ selectedRoller: roller, totalprice: newprice });
+  };
+
+  handleStabiliserSel = (stabiliser) => {
+    const oldprice = this.state.selectedStabiliser ? this.state.selectedStabiliser.price : 0;
+    const newprice = this.state.totalprice + stabiliser.price - oldprice;
+
+    this.setState({ selectedStabiliser: stabiliser, totalprice: newprice });
   };
 
   handlePincodeSel = (pincode) => {
@@ -1184,6 +1197,18 @@ class ForkliftDetail extends Component {
               )}
             >
               {this.state.selectedRoller? this.state.selectedRoller.rollertype + " Roller": null}
+            </ConditionalWrapper>
+
+            <ConditionalWrapper
+              condition={this.state.selectedStabiliser}
+              wrapper={(children) => (
+                <React.Fragment>
+                  {children}
+                  <br />
+                </React.Fragment>
+              )}
+            >
+              {this.state.selectedStabiliser? "Stabiliser Caster Wheel": null}
             </ConditionalWrapper>
 
             <ConditionalWrapper
@@ -1836,6 +1861,14 @@ class ForkliftDetail extends Component {
                 rollers={this.state.rollers}
                 selectedRoller={this.state.selectedRoller}
                 onRollerSel={this.handleRollerSel}
+              />
+            ) : null}
+
+{this.state.stabilisers && this.state.stabilisers.length > 0 ? (
+              <Stabiliser
+                stabilisers={this.state.stabilisers}
+                selectedStabiliser={this.state.selectedStabiliser}
+                onStabiliserSel={this.handleStabiliserSel}
               />
             ) : null}
 

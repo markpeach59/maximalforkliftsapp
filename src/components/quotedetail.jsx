@@ -86,6 +86,8 @@ class QuoteDetail extends Component {
 
       trolley: forky.manualtrolley,
       blinkey: forky.blinkey,
+      stabiliser:forky.stabiliser,
+
       sideextractionbattery: forky.sideextractionbattery,
     });
   }
@@ -360,6 +362,17 @@ class QuoteDetail extends Component {
               )}
             >
               {this.state.roller + " Roller, "}
+            </ConditionalWrapper>
+
+            <ConditionalWrapper
+              condition={this.state.stabiliser}
+              wrapper={(children) => (
+                <React.Fragment>
+                  {children}
+                </React.Fragment>
+              )}
+            >
+              { "Stabiliser Caster Wheel, "}
             </ConditionalWrapper>
 
 
