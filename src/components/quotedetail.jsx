@@ -682,7 +682,7 @@ class QuoteDetail extends Component {
               </React.Fragment>
             ) : null}
 
-            {this.state.engType !== "Warehouse" ? (
+            {this.state.engtype !== "Warehouse" ? (
               <React.Fragment>
                 , Full LED Lighting
               </React.Fragment>
