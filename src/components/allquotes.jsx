@@ -33,13 +33,13 @@ class AllQuotes extends Component {
 
   async componentDidMount() {
     const { data: quotes } = await getAllQuotes();
-    console.log("Quotes Returned", quotes);
+    //console.log("Quotes Returned", quotes);
 
     const { data: users } = await getUsers();
-    console.log("Users Returned", users);
+    //console.log("Users Returned", users);
 
     const { data: dealers } = await getDealers();
-    console.log("Dealers Returned", dealers);
+    //console.log("Dealers Returned", dealers);
 
     this.setState({
       quotes,

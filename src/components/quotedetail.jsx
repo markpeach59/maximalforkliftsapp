@@ -12,7 +12,9 @@ import {
 
 import Markup from "./markup";
 
-import OrderCreate from "./ordercreate";
+//import OrderCreate from "./ordercreate";
+
+import Generateorder from "./generateorder";
 
 import "typeface-roboto";
 
@@ -106,16 +108,25 @@ class QuoteDetail extends Component {
     }
   };
 
+
+
   handleCreateOrder = async () => {
     // _id of Quote Object
     const handle = this.props.match.params._id;
 
     //console.log("Order Id", handle);
+    function delay(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
 
     try {
       await createOrderFromQuote(handle);
 
       // go to specific order page
+      console.log('Delaying 2 seconds');
+      await delay(2000);
+     
+
       window.location = "/orders/" + handle;
     } catch (error) {
       console.log("did not create order", handle);
@@ -706,7 +717,11 @@ class QuoteDetail extends Component {
 <br /><strong>Or on a 5 year contract Hire at £ per week<br />
 3 year lease purchase at £  per week</strong>
 
-            <OrderCreate onOrderCreate={this.handleCreateOrder} />
+<br /><br />
+
+<Generateorder onOrderCreate={this.handleCreateOrder} />
+
+<br />
 
             <Markup currentMarkup={this.state.markup} onMarkup={this.handleMarkup} />
           </Grid>

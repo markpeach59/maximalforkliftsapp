@@ -67,6 +67,9 @@ import { getForkliftDetail } from "../services/forkliftDetailService";
 import { savequote } from "../services/quotesService";
 
 import Offertext from "./offertext";
+import Viewseats from "./viewseats";
+
+import Viewtyres from "./viewtyres";
 
 import "typeface-roboto";
 
@@ -1777,6 +1780,11 @@ class ForkliftDetail extends Component {
               />
             ) : null}
 
+
+            {this.state.tyres && this.state.tyres.length > 0 ? (
+              <React.Fragment><Viewtyres /><br /></React.Fragment>
+            ) : null}
+
             {this.state.tyres && this.state.tyres.length > 0 ? (
               <Tyres
                 tyres={this.state.tyres}
@@ -1904,6 +1912,11 @@ class ForkliftDetail extends Component {
                 selectedLoadbackrest={this.state.selectedLoadbackrest}
                 onLoadbackrestSel={this.handleLoadbackrestSel}
               />
+            ) : null}
+
+{this.state.seats && this.state.seats.length > 0 ? (
+  <React.Fragment><Viewseats /><br /></React.Fragment>
+              
             ) : null}
 
             {this.state.seats && this.state.seats.length > 0 ? (
