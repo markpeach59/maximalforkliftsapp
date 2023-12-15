@@ -11,6 +11,7 @@ export const engTypes = [
 export const engRestrictedTypes = [
   { _id: "2001", name: "Electric" },
   { _id: "2005", name: "Rough Terrain" },
+  { _id: "2006", name: "Reach" },
   { _id: "2007", name: "Warehouse" }
 ];
 
