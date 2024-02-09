@@ -11,6 +11,8 @@ import ForkliftImg from "./forkliftimg";
 
 import "typeface-roboto";
 
+import { makeStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
 
 const ViewOfferBox = (props) => {
    
@@ -18,6 +20,14 @@ const ViewOfferBox = (props) => {
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
+
+  const useStyles = makeStyles({
+    root: {
+      color: 'red'
+    },
+  });
+
+  const classes = useStyles();
 
   const onDialogOpen = () => {
 
@@ -51,7 +61,7 @@ const ViewOfferBox = (props) => {
           <ForkliftImg imgName="M-SERIES-ROUGH-TERRAIN-18T-25T-35T-2WD.png" />
           <React.Fragment>
         <p>Rough Terrain Kubota 2607 Euro 5 Capacity : 3500Kg<br />3 Stage Full Free Lift Mast 4350mm,2330mm Closed,1450mm Free Lift<br />3rd Valve, 1200mm Forks, Integral Side Shift<br />Pneumatic Tyres, Safety Blue Spot, Full Comfort Suspension Seat<br /> OPS Safety System, Amber Beacon, Reverse Alarm, Full LED Lighting<br /><br /><strong>Normal Dealer Price : £23244</strong></p> 
-         <p>Special Offer Price &pound;19,100 each<br />Only 3 left</p>
+        <Typography className={classes.root} align="center">Special Offer Price &pound;19,100 each<br />Only 3 left</Typography>
          
          </React.Fragment>
 </Grid>
