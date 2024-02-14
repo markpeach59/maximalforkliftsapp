@@ -71,6 +71,8 @@ import Viewseats from "./viewseats";
 
 import Viewtyres from "./viewtyres";
 
+import OfferAAR from "./offerAAR";
+
 import "typeface-roboto";
 
 class ForkliftDetail extends Component {
@@ -311,11 +313,21 @@ class ForkliftDetail extends Component {
 
     quote.modeldescription = this.state.modeldescription;
 
+    // implement AA and Reach discounts for Feb and March 2024
+    if (this.state.modeldescription && this.state.modeldescription[0].description==='AA Series'){
+      quote.saving = Math.round(quote.price * .025);
+      quote.offerprice = quote.price - quote.saving;
+    }
+
+    if (this.state.selectedChassis && this.state.selectedChassis.label==='Lithium Version' ) {
+      quote.saving = Math.round(quote.price * .03);
+      quote.offerprice = quote.price - quote.saving;
+    }
+
+
+
     if (this.state.selectedEngine)
       quote.powertrain = this.state.selectedEngine.enginetype;
-
-
-    // chassis, etc
 
     if (this.state.imgName) quote.imgname = this.state.imgName;
 
@@ -980,7 +992,6 @@ class ForkliftDetail extends Component {
     const ConditionalWrapper = ({ condition, wrapper, children }) =>
       condition ? wrapper(children) : null;
 
-    //console.log("modeldescription", this.state.modeldescription);
    
     return (
       <React.Fragment>
@@ -988,6 +999,16 @@ class ForkliftDetail extends Component {
           {this.state.offer ? <div>
           <Offertext model={this.state.model}/>
 </div>: null}
+
+
+{( this.state.modeldescription && this.state.modeldescription[0].description==='AA Series' ) ? (
+            <Offertext model={'AA'} />
+            ): null}
+
+
+{( this.state.engType && this.state.engType==='Reach' ) ? (
+             <Offertext model={'Reach'} />
+             ): null}
 <Grid>
         
 
@@ -1693,6 +1714,15 @@ class ForkliftDetail extends Component {
 
             {( this.state.offer ) ? (
             <Offer price={this.state.totalprice} offeron={this.state.offer} bigger={this.state.selectedBattery} model={this.state.model}/>
+            ): null}
+
+{( this.state.modeldescription && this.state.modeldescription[0].description==='AA Series' ) ? (
+            <OfferAAR price={this.state.totalprice} modeldescription={this.state.modeldescription} chassis={this.state.selectedChassis} />
+            ): null}
+
+
+{( this.state.selectedChassis && this.state.selectedChassis.label==='Lithium Version' ) ? (
+            <OfferAAR price={this.state.totalprice} modeldescription={this.state.modeldescription} chassis={this.state.selectedChassis} />
             ): null}
 
             <QuoteSave onQuoteSave={this.handleQuoteSave} />
