@@ -9,6 +9,9 @@ import Forks from "./forks";
 import SideShifts from "./sideshifts";
 import Forkpositioners from "./forkpositioner";
 import Tyres from "./tyres";
+
+import Dualdrive from "./dualdrive";
+
 import Seats from "./seats";
 import Cabins from "./cabins";
 import Valves from "./valves";
@@ -147,6 +150,8 @@ class ForkliftDetail extends Component {
       forkpositioners: forky.forkpositioner,
       tyres: forky.tyres,
 
+      dualdrives:forky.dualdrive,
+
       seatrequired: forky.seatrequired,
 
       seats: forky.seat,
@@ -230,6 +235,9 @@ class ForkliftDetail extends Component {
       selectedChassis: undefined,
 
       selectedTyre: undefined,
+      selectedDualdrive: undefined,
+
+
       selectedColdStoreProt: undefined,
       selectedSeat: undefined,
       selectedCabin: undefined,
@@ -353,6 +361,9 @@ class ForkliftDetail extends Component {
     if (this.state.defaulttyre) quote.tyre = this.state.defaulttyre;
 
     if (this.state.selectedTyre) quote.tyre = this.state.selectedTyre.tyretype;
+
+    if (this.state.selectedDualdrive) quote.dualdrive = true;
+
 
     if (this.state.selectedHalolight) quote.halolight = true;
     if (this.state.selectedUpsweptexhaust) quote.upsweptexhaust = true;
@@ -753,6 +764,15 @@ class ForkliftDetail extends Component {
     const newprice = this.state.totalprice + tyre.price - oldprice;
 
     this.setState({ selectedTyre: tyre, totalprice: newprice });
+  };
+
+  handleDualdrive = (dualdrive) => {
+    const oldprice = this.state.selectedDualdrive
+      ? this.state.selectedDualdrive.price
+      : 0;
+    const newprice = this.state.totalprice + dualdrive.price - oldprice;
+
+    this.setState({ selectedDualdrive: dualdrive, totalprice: newprice });
   };
 
   handleHalolight = (halolight) => {
@@ -1365,6 +1385,19 @@ class ForkliftDetail extends Component {
             </ConditionalWrapper>
 
             <ConditionalWrapper
+              condition={this.state.selectedDualdrive}
+              wrapper={(children) => (
+                <React.Fragment>
+                  {children}
+                  <br />
+                </React.Fragment>
+              )}
+            >
+              {this.state.selectedDualdrive ? "Dual Drive" : null}
+            </ConditionalWrapper>
+
+
+            <ConditionalWrapper
               condition={this.state.selectedUpsweptexhaust}
               wrapper={(children) => (
                 <React.Fragment>
@@ -1822,6 +1855,16 @@ class ForkliftDetail extends Component {
                 onTyreSel={this.handleTyreSel}
               />
             ) : null}
+
+
+            {this.state.dualdrives && this.state.dualdrives.length > 0 ? (
+              <Dualdrive
+                dualdrives={this.state.dualdrives}
+                selectedDualdrive={this.state.selectedDualdrive}
+                onDualdriveSel={this.handleDualdrive}
+              />
+            ) : null}   
+
 
             {this.state.halolights && this.state.halolights.length > 0 ? (
               <Halolight
