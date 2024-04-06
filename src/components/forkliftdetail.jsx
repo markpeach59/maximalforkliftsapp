@@ -1012,6 +1012,8 @@ class ForkliftDetail extends Component {
     const ConditionalWrapper = ({ condition, wrapper, children }) =>
       condition ? wrapper(children) : null;
 
+      if (this.state.modeldescription && this.state.modeldescription[0].description==='Coming Soon')
+        return ( <React.Fragment><h2>{this.state.model}</h2><h3>Coming Soon</h3></React.Fragment>);
    
     return (
       <React.Fragment>
