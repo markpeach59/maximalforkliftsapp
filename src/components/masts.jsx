@@ -15,7 +15,8 @@ const Masts = props => {
 
     selectedMast,
     onMastSizeSel,
-    selectedMastSize
+    selectedMastSize,
+    selectedSideShift
   } = props;
 
   var aa = "";
@@ -43,6 +44,35 @@ const Masts = props => {
                         )
   }
 
+  function displayCapacityMFH (mastsize, selectedSideShift) {
+
+    console.log ('SideShift -', selectedSideShift);
+
+    if (selectedSideShift && selectedSideShift.sideshifttype === 'Integral' ){
+
+        return mastsize.mastrange ? (
+                          
+          "," + mastsize.isscapacity +
+          "Kg " 
+        
+      ): (
+      null
+        
+      )
+
+    }
+    
+    return mastsize.mastrange ? (
+                          
+    "," + mastsize.stdcapacity +
+    "Kg " 
+  
+): (
+null
+  
+)
+}
+
   return (
     <React.Fragment>
       <Grid container spacing={2}>
@@ -60,7 +90,7 @@ const Masts = props => {
                         value={mastsize.mastlength}
                         control={<Radio color="primary" />}
                         label={
-                          displayMastDetails(mastsize)
+                          displayMastDetails(mastsize) + displayCapacityMFH(mastsize, selectedSideShift)
                         }
                         onChange={() => onMastSizeSel(mastsize, mast.masttype)}
                         checked={

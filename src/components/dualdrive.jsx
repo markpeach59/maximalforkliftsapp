@@ -9,11 +9,16 @@ import FormLabel from "@material-ui/core/FormLabel";
 import Divider from "@material-ui/core/Divider";
 
 const Dualdrive = props => {
-  const { dualdrives, onDualdriveSel, selectedDualdrive } = props;
+  const { dualdrives, onDualdriveSel, selectedDualdrive, selectedTyre } = props;
 
   var aa = "X";
   if (selectedDualdrive) {
     aa = selectedDualdrive.dualdrivetype;
+  }
+
+  function onSolidTyre () {
+    /* has Solid tyre been Selected */
+    return selectedTyre && selectedTyre.tyretype === 'S/E Tyres' ? true:false;
   }
 
   return (
@@ -28,12 +33,16 @@ const Dualdrive = props => {
               value={dualdrive.dualdrivetype}
               control={<Radio color="primary" />}
               label={dualdrive.dualdrivetype}
+              disabled ={!onSolidTyre()}
               onChange={() => onDualdriveSel(dualdrive)}
               checked={aa === dualdrive.dualdrivetype}
             />
           ))}
         </RadioGroup>
       </FormControl>
+      
+      
+      <p><sup>*</sup>Dual Drive Can only be selected with S/E Solid Tyres</p>
       <Divider />
       <br />
     </React.Fragment>

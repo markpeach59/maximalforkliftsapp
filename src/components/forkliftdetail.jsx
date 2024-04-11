@@ -1125,6 +1125,21 @@ class ForkliftDetail extends Component {
               this.state.selectedMastSize.freeliftheight
                 ? " , " + this.state.selectedMastSize.freeliftheight + "mm Free Lift"
                 : null}   
+
+
+<br />
+{this.state.selectedMastSize && !this.state.selectedSideShift &&
+              this.state.selectedMastSize.stdcapacity
+                ?  this.state.selectedMastSize.stdcapacity + "Kg Max Capacity@MFH"
+                : null}   
+               
+
+                {this.state.selectedMastSize && this.state.selectedSideShift &&
+              this.state.selectedMastSize.isscapacity
+                ?  this.state.selectedMastSize.isscapacity + "Kg Max Capacity@MFH"
+                : null}   
+                <br />
+
             </ConditionalWrapper>
             <ConditionalWrapper
               condition={this.state.selectedValve}
@@ -1785,6 +1800,8 @@ class ForkliftDetail extends Component {
               />
             ) : null}
 
+{console.log('Side', this.state.selectedSideShift)}
+
             {this.state.masts && this.state.masts.length > 0 ? (
               <Masts
                 masts={this.state.masts}
@@ -1792,8 +1809,12 @@ class ForkliftDetail extends Component {
                 onMastSel={this.handleMastSel}
                 onMastSizeSel={this.handleMastSizeSel}
                 selectedMastSize={this.state.selectedMastSize}
+                selectedSideShift={this.state.selectedSideShift}
+
               />
             ) : null}
+
+            
 
             {this.state.valves && this.state.valves.length > 0 ? (
               <Valves
@@ -1864,6 +1885,7 @@ class ForkliftDetail extends Component {
                 dualdrives={this.state.dualdrives}
                 selectedDualdrive={this.state.selectedDualdrive}
                 onDualdriveSel={this.handleDualdrive}
+                selectedTyre = {this.state.selectedTyre}
               />
             ) : null}   
 
