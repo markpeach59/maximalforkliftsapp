@@ -67,7 +67,7 @@ const Masts = props => {
     "Kg " 
   
 ): (
-null
+""
   
 )
 }
