@@ -10,8 +10,6 @@ import SideShifts from "./sideshifts";
 import Forkpositioners from "./forkpositioner";
 import Tyres from "./tyres";
 
-import Dualdrive from "./dualdrive";
-
 import Seats from "./seats";
 import Cabins from "./cabins";
 import Valves from "./valves";
@@ -150,8 +148,6 @@ class ForkliftDetail extends Component {
       forkpositioners: forky.forkpositioner,
       tyres: forky.tyres,
 
-      dualdrives:forky.dualdrive,
-
       seatrequired: forky.seatrequired,
 
       seats: forky.seat,
@@ -235,8 +231,7 @@ class ForkliftDetail extends Component {
       selectedChassis: undefined,
 
       selectedTyre: undefined,
-      selectedDualdrive: undefined,
-
+    
 
       selectedColdStoreProt: undefined,
       selectedSeat: undefined,
@@ -361,8 +356,6 @@ class ForkliftDetail extends Component {
     if (this.state.defaulttyre) quote.tyre = this.state.defaulttyre;
 
     if (this.state.selectedTyre) quote.tyre = this.state.selectedTyre.tyretype;
-
-    if (this.state.selectedDualdrive) quote.dualdrive = true;
 
 
     if (this.state.selectedHalolight) quote.halolight = true;
@@ -766,14 +759,6 @@ class ForkliftDetail extends Component {
     this.setState({ selectedTyre: tyre, totalprice: newprice });
   };
 
-  handleDualdrive = (dualdrive) => {
-    const oldprice = this.state.selectedDualdrive
-      ? this.state.selectedDualdrive.price
-      : 0;
-    const newprice = this.state.totalprice + dualdrive.price - oldprice;
-
-    this.setState({ selectedDualdrive: dualdrive, totalprice: newprice });
-  };
 
   handleHalolight = (halolight) => {
     const oldprice = this.state.selectedHalolight
@@ -1401,18 +1386,6 @@ class ForkliftDetail extends Component {
                 : null}
             </ConditionalWrapper>
 
-            <ConditionalWrapper
-              condition={this.state.selectedDualdrive}
-              wrapper={(children) => (
-                <React.Fragment>
-                  {children}
-                  <br />
-                </React.Fragment>
-              )}
-            >
-              {this.state.selectedDualdrive ? "Dual Drive" : null}
-            </ConditionalWrapper>
-
 
             <ConditionalWrapper
               condition={this.state.selectedUpsweptexhaust}
@@ -1878,16 +1851,6 @@ class ForkliftDetail extends Component {
                 onTyreSel={this.handleTyreSel}
               />
             ) : null}
-
-
-            {this.state.dualdrives && this.state.dualdrives.length > 0 ? (
-              <Dualdrive
-                dualdrives={this.state.dualdrives}
-                selectedDualdrive={this.state.selectedDualdrive}
-                onDualdriveSel={this.handleDualdrive}
-                selectedTyre = {this.state.selectedTyre}
-              />
-            ) : null}   
 
 
             {this.state.halolights && this.state.halolights.length > 0 ? (
