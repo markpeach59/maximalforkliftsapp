@@ -991,7 +991,33 @@ class ForkliftDetail extends Component {
     this.setState({ selectedAircon: aircon, totalprice: newprice });
   };
 
-  
+  addMFHCapacity = ()=> {
+
+    if (this.state.selectedMastSize &&
+      this.state.selectedMastSize.stdcapacity && this.state.selectedForkpositioner)
+       return ("Contact Sales for Max Capacity@MFH");
+
+
+    if (this.state.selectedMastSize && !this.state.selectedSideShift &&
+      this.state.selectedMastSize.stdcapacity)
+       return (this.state.selectedMastSize.stdcapacity + "Kg Max Capacity@MFH Std");
+       
+     console.log('opps - ', this.state.selectedSideShift);  
+
+    if( this.state.selectedMastSize && this.state.selectedSideShift && this.state.selectedSideShift.sideshifttype ==='Hook On' &&
+      this.state.selectedMastSize.stdcapacity ){
+        const reduc = Math.round(this.state.selectedMastSize.stdcapacity  * .08);
+          const hookoncapacity = this.state.selectedMastSize.stdcapacity  -reduc;
+          return (hookoncapacity + "Kg Max Capacity@MFH with Hook On")
+    }
+
+    if( this.state.selectedMastSize && this.state.selectedSideShift && this.state.selectedSideShift.sideshifttype ==='Integral' &&
+        this.state.selectedMastSize.isscapacity )
+          return (this.state.selectedMastSize.isscapacity + "Kg Max Capacity@MFH with Integral");
+
+
+    return('');
+  }
 
   render() {
     const ConditionalWrapper = ({ condition, wrapper, children }) =>
@@ -1113,17 +1139,9 @@ class ForkliftDetail extends Component {
 
 
 <br />
-{this.state.selectedMastSize && !this.state.selectedSideShift &&
-              this.state.selectedMastSize.stdcapacity
-                ?  this.state.selectedMastSize.stdcapacity + "Kg Max Capacity@MFH"
-                : null}   
-               
 
-                {this.state.selectedMastSize && this.state.selectedSideShift &&
-              this.state.selectedMastSize.isscapacity
-                ?  this.state.selectedMastSize.isscapacity + "Kg Max Capacity@MFH"
-                : null}   
-                <br />
+
+            { this.addMFHCapacity()}
 
             </ConditionalWrapper>
             <ConditionalWrapper
@@ -1783,6 +1801,7 @@ class ForkliftDetail extends Component {
                 onMastSizeSel={this.handleMastSizeSel}
                 selectedMastSize={this.state.selectedMastSize}
                 selectedSideShift={this.state.selectedSideShift}
+                selectedForkpositioner={this.state.selectedForkpositioner}
 
               />
             ) : null}

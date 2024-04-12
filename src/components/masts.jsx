@@ -16,7 +16,8 @@ const Masts = props => {
     selectedMast,
     onMastSizeSel,
     selectedMastSize,
-    selectedSideShift
+    selectedSideShift,
+    selectedForkpositioner
   } = props;
 
   var aa = "";
@@ -44,22 +45,33 @@ const Masts = props => {
                         )
   }
 
-  function displayCapacityMFH (mastsize, selectedSideShift) {
+  function displayCapacityMFH (mastsize, selectedSideShift, selectedForkpositioner ) {
 
     console.log ('SideShift -', selectedSideShift);
+    console.log ('Fork Positioner -', selectedForkpositioner);
+
+    if (selectedForkpositioner){
+
+      return ""
+    }
+
+    if (selectedSideShift && selectedSideShift.sideshifttype === 'Hook On' ){
+      if  (mastsize.mastrange && mastsize.stdcapacity){
+          const reduc = Math.round(mastsize.stdcapacity * .08);
+          const hookoncapacity = mastsize.stdcapacity -reduc;
+          return ("," + hookoncapacity + "Kg")
+      }
+      return "";
+    }
 
     if (selectedSideShift && selectedSideShift.sideshifttype === 'Integral' ){
-
-        return mastsize.mastrange ? (
-                          
-          "," + mastsize.isscapacity +
-          "Kg " 
-        
-      ): (
-      ""
-      )
-
+      if  (mastsize.mastrange && mastsize.isscapacity){
+        return ("," + mastsize.isscapacity+ "Kg")
     }
+    return "";
+    }
+
+  
     
     return mastsize.mastrange ? (
                           
@@ -89,7 +101,7 @@ const Masts = props => {
                         value={mastsize.mastlength}
                         control={<Radio color="primary" />}
                         label={
-                          displayMastDetails(mastsize) + displayCapacityMFH(mastsize, selectedSideShift)
+                          displayMastDetails(mastsize) + displayCapacityMFH(mastsize, selectedSideShift, selectedForkpositioner)
                         }
                         onChange={() => onMastSizeSel(mastsize, mast.masttype)}
                         checked={
