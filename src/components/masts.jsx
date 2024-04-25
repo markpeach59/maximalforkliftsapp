@@ -47,8 +47,8 @@ const Masts = props => {
 
   function displayCapacityMFH (mastsize, selectedSideShift, selectedForkpositioner ) {
 
-    console.log ('SideShift -', selectedSideShift);
-    console.log ('Fork Positioner -', selectedForkpositioner);
+    //console.log ('SideShift -', selectedSideShift);
+    //console.log ('Fork Positioner -', selectedForkpositioner);
 
     if (selectedForkpositioner){
 

@@ -1001,8 +1001,7 @@ class ForkliftDetail extends Component {
     if (this.state.selectedMastSize && !this.state.selectedSideShift &&
       this.state.selectedMastSize.stdcapacity)
        return (this.state.selectedMastSize.stdcapacity + "Kg Max Capacity@MFH Std");
-       
-     console.log('opps - ', this.state.selectedSideShift);  
+        
 
     if( this.state.selectedMastSize && this.state.selectedSideShift && this.state.selectedSideShift.sideshifttype ==='Hook On' &&
       this.state.selectedMastSize.stdcapacity ){
