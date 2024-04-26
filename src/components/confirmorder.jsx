@@ -30,7 +30,7 @@ const Confirmorder = (props) => {
     setSnackbarOpen(true);
     setSnackbarMessage(`Setting Order as Confirmed`);
     // need to handle confirmation
-    onConfirmorder(orderid);
+    onConfirmorder(orderid, "Stock#");
     onDialogClose();
   };
 

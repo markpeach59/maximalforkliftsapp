@@ -46,7 +46,7 @@ class Orders extends Component {
     return (
       <React.Fragment>
         <Grid container spacing={2}>
-          <Grid item xs={8}>
+          <Grid item xs={10}>
             <h2>List of Orders</h2>
 
             <Table>
@@ -60,6 +60,8 @@ class Orders extends Component {
                   <TableCell align="right">Saving</TableCell>
                   <TableCell align="right">Total</TableCell>
                   <TableCell align="right">Confirmed</TableCell>
+                  <TableCell align="right">PO#</TableCell>
+                  <TableCell align="right">Stock#</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -98,6 +100,12 @@ class Orders extends Component {
                      <TableCell align="right">
                      {!x.confirmedorder? "No": "Yes"}
                      </TableCell>
+                     <TableCell align="right">
+                     {!x.ponumber? "": x.ponumber}
+                    </TableCell>
+                    <TableCell align="right">
+                    {!x.stocknumber? "": x.stocknumber}
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>

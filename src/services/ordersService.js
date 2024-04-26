@@ -11,6 +11,9 @@ export function getOrderDetail(id) {
   return http.get(apiEndPoint + "/" + id);
 }
 
-export function confirmOrder(id) {
-  return http.patch(apiEndPoint + "/confirmorder/" + id);
+export function confirmOrder(id, newstocknumber) {
+  console.log( 'stocknumber', newstocknumber)
+  return http.patch(apiEndPoint + "/confirmorder/" + id, {
+    stocknumber: newstocknumber
+  });
 }

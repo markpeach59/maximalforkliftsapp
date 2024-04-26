@@ -48,7 +48,7 @@ class Orders extends Component {
     });
   }
 
-  handleConfirmation = async (orderid) => {
+  handleConfirmation = async (orderid, stocknumber) => {
     
     //console.log("Confirmation ", orderid);
 
@@ -56,15 +56,17 @@ class Orders extends Component {
 
     if (theorder === undefined) return;
 
-    //console.log("the Order", theorder);
+    console.log("the Order", theorder);
     theorder.confirmedorder = true;
+    theorder.stocknumber = stocknumber;
+
     this.setState({ theorder });
 
     // need to store this back in MongoDB
 
    
     try {
-      await confirmOrder(orderid)
+      await confirmOrder(orderid, stocknumber)
     } catch(error){
       console.log("Could not Confirm Order ", orderid, " in DB");
       // should be resetting markup to prev value
@@ -120,7 +122,7 @@ class Orders extends Component {
     return (
       <React.Fragment>
         <Grid container spacing={2}>
-          <Grid item xs={8}>
+          <Grid item xs={10}>
             <h2>List of Orders</h2>
 
             <Table>
@@ -135,6 +137,8 @@ class Orders extends Component {
                   <TableCell align="right">Saving</TableCell>
                   <TableCell align="right">Total</TableCell>
                   <TableCell align="right">Confirmed</TableCell>
+                  <TableCell align="right">PO#</TableCell>
+                  <TableCell align="right">Stock#</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -180,6 +184,14 @@ class Orders extends Component {
                      onConfirmorder={this.handleConfirmation} />
                     }
                      </TableCell>
+
+                     <TableCell align="right">
+                     {!x.ponumber? "": x.ponumber}
+                    </TableCell>
+                    <TableCell align="right">
+                    {!x.stocknumber? "": x.stocknumber}
+                    </TableCell>
+
                   </TableRow>
                 ))}
               </TableBody>
