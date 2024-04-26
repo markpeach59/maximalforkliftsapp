@@ -18,6 +18,8 @@ const Confirmorder = (props) => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
 
+  const [thestocknumber, setThestocknumber] = useState(0);
+
   const onDialogOpen = () => {
     setDialogOpen(true);
   };
@@ -30,7 +32,7 @@ const Confirmorder = (props) => {
     setSnackbarOpen(true);
     setSnackbarMessage(`Setting Order as Confirmed`);
     // need to handle confirmation
-    onConfirmorder(orderid, "Stock#");
+    onConfirmorder(orderid, thestocknumber);
     onDialogClose();
   };
 
@@ -50,12 +52,19 @@ const Confirmorder = (props) => {
       <Dialog open={dialogOpen} onClose={onDialogClose}>
         <DialogTitle>Confirm Order to Dealer</DialogTitle>
         <DialogContent>
-          
+        <TextField
+            margin="normal"
+            label="Please Enter Stock Number"
+            InputProps={{ name: "thestocknumber" }}
+            onChange={(e) => setThestocknumber(e.target.value)}
+            value={thestocknumber}
+            fullwidth="true"
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={onDialogClose}>Cancel</Button>
           
-          <Button onClick={onConfirm} variant="contained">
+          <Button onClick={onConfirm} disabled={!thestocknumber} variant="contained">
             Confirm
           </Button>
         </DialogActions>
