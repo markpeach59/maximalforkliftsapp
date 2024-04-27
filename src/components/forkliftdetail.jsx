@@ -74,12 +74,17 @@ import Viewtyres from "./viewtyres";
 
 import OfferAAR from "./offerAAR";
 
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
+
 import "typeface-roboto";
 
 class ForkliftDetail extends Component {
   state = {};
-
+  
   async componentDidMount() {
+   
+
     const user = auth.getCurrentUser();
     this.setState({ user });
 
@@ -138,6 +143,7 @@ class ForkliftDetail extends Component {
 
       engines: forky.engines,
 
+      chassisrequired: forky.chassisrequired,
       chassis:initialChassis,
 
 
@@ -1075,7 +1081,13 @@ class ForkliftDetail extends Component {
               {this.state.powertrain}
             </ConditionalWrapper>
 
-  
+            {( !this.state.powertrain && this.state.chassisrequired ) ? (
+              <React.Fragment>
+                 <Typography style={{color: 'red'}}>Please select a Chassis Option of lead or Lithium</Typography>
+              </React.Fragment>
+            ) : null}
+            
+
              
             Capacity : {this.state.liftcapacity}Kg 
           <ConditionalWrapper
@@ -1741,7 +1753,7 @@ class ForkliftDetail extends Component {
 <br />
             {( !this.state.selectedSeat && this.state.seatrequired ) ? (
               <React.Fragment>
-                Please select a Seat Option
+                 <Typography style={{color: 'red'}}>Please select a Seat Option</Typography>
               </React.Fragment>
             ) : null}
 
