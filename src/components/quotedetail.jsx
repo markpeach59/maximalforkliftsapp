@@ -110,17 +110,18 @@ class QuoteDetail extends Component {
 
 
 
-  handleCreateOrder = async () => {
+  handleCreateOrder = async (ponumber) => {
     // _id of Quote Object
     const handle = this.props.match.params._id;
 
-    //console.log("Order Id", handle);
+    console.log("PO", handle, ponumber);
+    
     function delay(ms) {
       return new Promise(resolve => setTimeout(resolve, ms));
     }
 
     try {
-      await createOrderFromQuote(handle);
+      await createOrderFromQuote(handle, ponumber);
 
       // go to specific order page
       console.log('Delaying 2 seconds');

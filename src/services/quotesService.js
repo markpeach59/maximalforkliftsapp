@@ -17,8 +17,10 @@ export function getQuoteDetail(id) {
   return http.get(apiEndPoint + "/" + id);
 }
 
-export function createOrderFromQuote(id) {
-  return http.patch(apiEndPoint + "/" + id);
+export function createOrderFromQuote(id, newponumber) {
+  return http.patch(apiEndPoint + "/" + id, {
+    ponumber: newponumber
+  });
 }
 
 export function reassignQuote(id, newuserid) {

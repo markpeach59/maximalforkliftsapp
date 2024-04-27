@@ -5,6 +5,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 import Snackbar from "@material-ui/core/Snackbar";
+import { TextField } from "@material-ui/core";
 
 import "typeface-roboto";
 
@@ -18,6 +19,8 @@ const Generateorder = (props) => {
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
+
+  const [theponumber, setTheponumber] = useState("");
 
   const onDialogOpen = () => {
 
@@ -33,7 +36,7 @@ const Generateorder = (props) => {
     setSnackbarOpen(true);
     setSnackbarMessage(`Order notified`);
     
-    onOrderCreate();
+    onOrderCreate(theponumber);
 
     onDialogClose();
   };
@@ -56,6 +59,14 @@ const Generateorder = (props) => {
         <DialogContent>
         <p>Please Note - This will raise an official order from this forklift quote</p>
         <p>Please confirm you wish to place an order</p>
+        <TextField
+            margin="normal"
+            label="Please Enter your PO number"
+            InputProps={{ name: "theponumber" }}
+            onChange={(e) => setTheponumber(e.target.value)}
+            value={theponumber}
+            fullwidth="true"
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={onDialogClose}>Cancel</Button>
