@@ -216,6 +216,7 @@ class ForkliftDetail extends Component {
 
       markup: 0,
       batteryconstraint: false,
+
     });
 
     
@@ -1030,6 +1031,9 @@ class ForkliftDetail extends Component {
 
       if (this.state.modeldescription && this.state.modeldescription[0].description==='Coming Soon')
         return ( <React.Fragment><h2>{this.state.model}</h2><h3>Coming Soon</h3></React.Fragment>);
+
+    
+  
    
     return (
       <React.Fragment>
@@ -1777,7 +1781,7 @@ class ForkliftDetail extends Component {
             <OfferAAR price={this.state.totalprice} modeldescription={this.state.modeldescription} chassis={this.state.selectedChassis} />
             ): null}
 
-            <QuoteSave onQuoteSave={this.handleQuoteSave} />
+            <QuoteSave onQuoteSave={this.handleQuoteSave} forklift={this.state}/>
             <Markup currentMarkup={this.state.markup} onMarkup={this.handleMarkup} />
 
           </Grid>
@@ -1801,8 +1805,6 @@ class ForkliftDetail extends Component {
                 onEngineSel={this.handleEngineSel}
               />
             ) : null}
-
-{console.log('Side', this.state.selectedSideShift)}
 
             {this.state.masts && this.state.masts.length > 0 ? (
               <Masts
