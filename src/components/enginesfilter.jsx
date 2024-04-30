@@ -43,19 +43,19 @@ const EnginesFilter = props => {
   }
 
   const classes = useStyles();
-
+ 
   return (
     <React.Fragment>
       <FormControl component="fieldset" className={classes.formControl}>
         <FormLabel component="legend">Engine Type</FormLabel>
         <RadioGroup aria-label="enginetype" name="enginetype" row={true}>
-          {engines.map(engine => (
+          {engines.map((engine, index) => (
             <FormControlLabel
               key={engine._id}
               value={engine.name}
               control={<Radio color="primary" />}
               label={engine.name}
-              onChange={() => onEngineSel(engine)}
+              onChange={() => onEngineSel(engine, index)}
               checked={aa === engine.name}
             />
           ))}

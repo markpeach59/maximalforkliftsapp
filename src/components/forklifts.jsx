@@ -37,11 +37,17 @@ class Forklifts extends Component {
     this.setState({ user });
     //console.log('User is ', user);
 
+
+
+
     let isrestricted = false;
     
     //localStorage.removeItem("restricted");
     const test = localStorage.getItem("restricted");
     if (test) isrestricted = true;
+
+
+    
 
     if (user.dealerId){
       const { data: dealery } = await getDealerDetail(user.dealerId);
@@ -53,16 +59,31 @@ class Forklifts extends Component {
       }
     }
 
+    const eng = getEngTypes(isrestricted);
+    //console.log("Eng List Returned", eng);
+
+    const cap = getCapacityFilters();
+
+    let engFilIndex = parseInt(localStorage.getItem("selectedEngineIndex"));
+    //console.log('ENG Fil', engFilIndex) 
+    
+    let capFilIndex = parseInt(localStorage.getItem("selectedCapacityFilterIndex"));
+    //console.log('CAP Fil', capFilIndex) 
+
+
     if (isrestricted){
       localStorage.setItem("restricted", "true");
       const { data: forklifts2 } = await getRestrictedForklifts();
       //console.log("Forklifts2 Returned", forklifts2);
       this.setState({
         forklifts:forklifts2,
-        engTypesFilter: getEngTypes(isrestricted),
-        capacityFilter: getCapacityFilters(),
+        engTypesFilter: eng,
+      capacityFilter: cap,
+      selectedEngine: engFilIndex ? eng[engFilIndex]: undefined,
+      selectedCapacityFilter: capFilIndex ? cap[capFilIndex]: undefined,
         loading: false,
-        restricted:true
+        restricted:true,
+        
       });
 
     }
@@ -70,19 +91,33 @@ else{
 
     const { data: forklifts } = await getForklifts();
     //console.log("Forklifts Returned", forklifts);
+    
+    
+  
+
     this.setState({
-      forklifts,
-      engTypesFilter: getEngTypes(isrestricted),
-      capacityFilter: getCapacityFilters(),
+      forklifts:forklifts,
+      engTypesFilter: eng,
+      capacityFilter: cap,
+      selectedEngine: engFilIndex ? eng[engFilIndex]: undefined,
+      selectedCapacityFilter: capFilIndex ? cap[capFilIndex]: undefined,
       loading: false,
+     
     });
   }
+
+
+
+
+
   }
 
   toggleTheme = async () => {
 
     //console.log("Hello World", this.state.restricted );
-  
+    // we have toggled so remove any indexes
+  localStorage.removeItem("selectedEngineIndex");
+  localStorage.removeItem("selectedCapacityFilterIndex");
     
     const now = !this.state.restricted;
     const isrestricted = now;
@@ -97,6 +132,8 @@ else{
         forklifts:forklifts2,
         engTypesFilter: getEngTypes(isrestricted),
         capacityFilter: getCapacityFilters(),
+        selectedEngine: undefined,
+        selectedCapacityFilter: undefined,
         loading: false,
         restricted:now
       });
@@ -110,24 +147,23 @@ else{
         forklifts:forklifts2,
         engTypesFilter: getEngTypes(isrestricted),
         capacityFilter: getCapacityFilters(),
+        selectedEngine: undefined,
+        selectedCapacityFilter: undefined,
         loading: false,
         restricted:now
       });
 
     }
 
-
-
-  
-
-
-    //this.setState ({restricted:now});
-  
     
   }
 
   handleResetFilters = () => {
     //console.log("Been Reset");
+    //localStorage.setItem("restricted", "true");
+
+    localStorage.removeItem("selectedEngineIndex");
+    localStorage.removeItem("selectedCapacityFilterIndex");
 
     this.setState({
       selectedEngine: undefined,
@@ -135,14 +171,17 @@ else{
     });
   };
 
-  handleCapFilter = (capfilter) => {
+  handleCapFilter = (capfilter, index) => {
+    //console.log("ZZ",index);
+    localStorage.setItem("selectedCapacityFilterIndex", index);
     this.setState({ selectedCapacityFilter: capfilter });
   };
 
-  handleEngineSel = (engine) => {
-    //console.log("ZZ", engine.name);
+  handleEngineSel = (engine, index) => {
+    //console.log("ZZ", index);
+    localStorage.setItem("selectedEngineIndex", index);
     this.setState({ selectedEngine: engine });
-    //console.log("ZZZ", this.state.selectedEngine.name);
+
   };
 
   filterModels(models) {
@@ -206,6 +245,9 @@ else{
 
     // until we get data from the REST API - we in Loading State
     if (this.state.loading === true) return <p> Loading ...</p>;
+
+
+
 
     if (count === 0) return <p>There are no forklifts in the database</p>;
 

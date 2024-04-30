@@ -56,13 +56,13 @@ const CapacityFilter = props => {
           //onChange={handleChange}
           row={true}
         >
-          {capacityfilters.map(capacityfilter => (
+          {capacityfilters.map((capacityfilter, index) => (
             <FormControlLabel
               key={capacityfilter._id}
               value={capacityfilter.capFilter}
               control={<Radio color="primary" />}
               label={capacityfilter.capFilter}
-              onChange={() => onCapacityFilterSel(capacityfilter)}
+              onChange={() => onCapacityFilterSel(capacityfilter, index)}
               checked={aa === capacityfilter.capFilter}
             />
           ))}
