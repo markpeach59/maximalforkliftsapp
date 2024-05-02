@@ -65,7 +65,7 @@ class Forklifts extends Component {
     const cap = getCapacityFilters();
 
     let engFilIndex = parseInt(localStorage.getItem("selectedEngineIndex"));
-    //console.log('ENG Fil', engFilIndex) 
+    console.log('ENG Fil', engFilIndex) 
     
     let capFilIndex = parseInt(localStorage.getItem("selectedCapacityFilterIndex"));
     //console.log('CAP Fil', capFilIndex) 
@@ -75,12 +75,13 @@ class Forklifts extends Component {
       localStorage.setItem("restricted", "true");
       const { data: forklifts2 } = await getRestrictedForklifts();
       //console.log("Forklifts2 Returned", forklifts2);
+      // +1 is so any valid number including 0 is true 
       this.setState({
         forklifts:forklifts2,
         engTypesFilter: eng,
       capacityFilter: cap,
-      selectedEngine: engFilIndex ? eng[engFilIndex]: undefined,
-      selectedCapacityFilter: capFilIndex ? cap[capFilIndex]: undefined,
+      selectedEngine: (engFilIndex +1) ? eng[engFilIndex]: undefined,
+      selectedCapacityFilter: (capFilIndex+1) ? cap[capFilIndex]: undefined,
         loading: false,
         restricted:true,
         
@@ -99,8 +100,8 @@ else{
       forklifts:forklifts,
       engTypesFilter: eng,
       capacityFilter: cap,
-      selectedEngine: engFilIndex ? eng[engFilIndex]: undefined,
-      selectedCapacityFilter: capFilIndex ? cap[capFilIndex]: undefined,
+      selectedEngine:  (engFilIndex +1)? eng[engFilIndex]: undefined,
+      selectedCapacityFilter: (capFilIndex+1) ? cap[capFilIndex]: undefined,
       loading: false,
      
     });
@@ -178,7 +179,7 @@ else{
   };
 
   handleEngineSel = (engine, index) => {
-    //console.log("ZZ", index);
+    console.log("ZZ", index);
     localStorage.setItem("selectedEngineIndex", index);
     this.setState({ selectedEngine: engine });
 
