@@ -75,13 +75,13 @@ class Forklifts extends Component {
       localStorage.setItem("restricted", "true");
       const { data: forklifts2 } = await getRestrictedForklifts();
       //console.log("Forklifts2 Returned", forklifts2);
-      // +1 is so any valid number including 0 is true 
+      // +1 is so any valid number including 0 is true -  NaN + 1 !
       this.setState({
         forklifts:forklifts2,
         engTypesFilter: eng,
       capacityFilter: cap,
-      selectedEngine: (engFilIndex +1) ? eng[engFilIndex]: undefined,
-      selectedCapacityFilter: (capFilIndex+1) ? cap[capFilIndex]: undefined,
+      selectedEngine: (!isNaN(engFilIndex )) ? eng[engFilIndex]: undefined,
+      selectedCapacityFilter: (!isNaN(capFilIndex) )? cap[capFilIndex]: undefined,
         loading: false,
         restricted:true,
         
@@ -100,8 +100,8 @@ else{
       forklifts:forklifts,
       engTypesFilter: eng,
       capacityFilter: cap,
-      selectedEngine:  (engFilIndex +1)? eng[engFilIndex]: undefined,
-      selectedCapacityFilter: (capFilIndex+1) ? cap[capFilIndex]: undefined,
+      selectedEngine:  (!isNaN(engFilIndex ))? eng[engFilIndex]: undefined,
+      selectedCapacityFilter: (!isNaN(capFilIndex )) ? cap[capFilIndex]: undefined,
       loading: false,
      
     });
