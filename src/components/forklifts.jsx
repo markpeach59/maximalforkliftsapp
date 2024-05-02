@@ -65,7 +65,7 @@ class Forklifts extends Component {
     const cap = getCapacityFilters();
 
     let engFilIndex = parseInt(localStorage.getItem("selectedEngineIndex"));
-    console.log('ENG Fil', engFilIndex) 
+    //console.log('ENG Fil', engFilIndex) 
     
     let capFilIndex = parseInt(localStorage.getItem("selectedCapacityFilterIndex"));
     //console.log('CAP Fil', capFilIndex) 
@@ -179,7 +179,7 @@ else{
   };
 
   handleEngineSel = (engine, index) => {
-    console.log("ZZ", index);
+    //console.log("ZZ", index);
     localStorage.setItem("selectedEngineIndex", index);
     this.setState({ selectedEngine: engine });
 
