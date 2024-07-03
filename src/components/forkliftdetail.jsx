@@ -339,6 +339,16 @@ class ForkliftDetail extends Component {
 
     }
 
+    if (this.state.selectedVoltage && this.state.selectedVoltage.label === 'Standard') {
+
+      if (this.state.defaultbattery) quote.saving = Math.round(quote.price * .10);
+      // now override if an optional choice has been made
+      if (this.state.selectedBattery) quote.saving = Math.round(quote.price * .15);
+
+      quote.offerprice = quote.price - quote.saving;
+
+    }
+
 
     quote.capacity = this.state.liftcapacity;
     quote.engtype = this.state.engType;
@@ -347,7 +357,7 @@ class ForkliftDetail extends Component {
 
     quote.modeldescription = this.state.modeldescription;
 
-    // implement AA and Reach discounts for Feb and March 2024
+    // implement AA and Reach discounts 
     if (this.state.modeldescription && this.state.modeldescription[0].description==='AA Series'){
       quote.saving = Math.round(quote.price * .025);
       quote.offerprice = quote.price - quote.saving;
