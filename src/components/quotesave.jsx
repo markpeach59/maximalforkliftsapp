@@ -14,6 +14,8 @@ const QuoteSave = props => {
 
   if  (!forklift.powertrain && forklift.chassisrequired ){disabled=true;}
 
+  if  (forklift.voltagerequired && !forklift.selectedVoltage ){disabled=true;}
+
   return (
     <React.Fragment>
       <div>
