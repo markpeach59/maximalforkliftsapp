@@ -70,7 +70,6 @@ import { savequote } from "../services/quotesService";
 
 import Offertext from "./offertext";
 
-import Viewlevels from "./viewlevels";
 import Viewseats from "./viewseats";
 
 import Viewtyres from "./viewtyres";
@@ -1896,11 +1895,6 @@ class ForkliftDetail extends Component {
             <ResetOptions onResetOptions={this.handleResetOptions} />
 
 
-
-
-            {this.state.voltage && this.state.voltage.length > 0 ? (
-              <React.Fragment><Viewlevels /><br /><br /></React.Fragment>
-            ) : null}
 
             {this.state.voltage && this.state.voltage.length > 0 ? (
               <Voltage
