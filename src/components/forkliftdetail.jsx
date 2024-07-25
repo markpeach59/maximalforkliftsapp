@@ -369,8 +369,8 @@ class ForkliftDetail extends Component {
       quote.offerprice = quote.price - quote.saving;
     }
 
-     // the Entry level and Heavy Duty have no offer
-    if (this.state.selectedVoltage && this.state.selectedVoltage.label !== 'Standard') {
+     // the Entry level and Heavy Duty have no offer - [0] would be S for Standard
+    if (this.state.selectedVoltage && this.state.selectedVoltage.label[0] !== 'S') {
       quote.saving = undefined;
       quote.offerprice = undefined;
     }
@@ -1871,7 +1871,7 @@ class ForkliftDetail extends Component {
             ): null}
 
     
-    { (this.state.selectedVoltage && this.state.selectedVoltage.label === 'Standard') ? (
+    { (this.state.selectedVoltage && this.state.selectedVoltage.label[0] === 'S') ? (
             <Offer price={this.state.totalprice} offeron={true} bigger={this.state.selectedBattery} model={this.state.model}/>
             ):null}
    
