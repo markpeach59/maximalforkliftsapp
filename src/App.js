@@ -41,8 +41,6 @@ import DealerHeader from "./components/dealerheader";
 import ListAllUsers from "./components/listallusers";
 import ListAllDealers from "./components/listalldealers";
 
-import ViewOfferBox from "./components/viewofferbox";
-
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
