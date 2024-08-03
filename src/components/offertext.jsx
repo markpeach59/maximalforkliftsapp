@@ -41,10 +41,7 @@ if ( model === 'Reach'){
   return (
         <React.Fragment>
 
-<Typography variant="h6">Current Offer : 10% off the standard AX Range trunk with standard battery - 
-15% off the standard AX Range trunk with a bigger battery
-</Typography>
-<br />
+
 <br />
         </React.Fragment>
 

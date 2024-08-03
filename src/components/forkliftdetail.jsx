@@ -340,12 +340,16 @@ class ForkliftDetail extends Component {
 
     }
 
-    if (this.state.selectedVoltage && this.state.selectedVoltage.label === 'Standard') {
+    if (this.state.selectedVoltage && this.state.selectedVoltage.label[0] === 'S') {
 
-      if (this.state.defaultbattery) quote.saving = Math.round(quote.price * .10);
-      // now override if an optional choice has been made
-      if (this.state.selectedBattery) quote.saving = Math.round(quote.price * .15);
+      quote.saving = Math.round(quote.price * .15);
+      quote.offerprice = quote.price - quote.saving;
 
+    }
+
+    if (this.state.selectedVoltage && this.state.selectedVoltage.label[0] === 'H') {
+
+      quote.saving = Math.round(quote.price * .10);
       quote.offerprice = quote.price - quote.saving;
 
     }
@@ -369,8 +373,8 @@ class ForkliftDetail extends Component {
       quote.offerprice = quote.price - quote.saving;
     }
 
-     // the Entry level and Heavy Duty have no offer - [0] would be S for Standard
-    if (this.state.selectedVoltage && this.state.selectedVoltage.label[0] !== 'S') {
+     // the Entry level has no offer - [0] would be L for Light
+    if (this.state.selectedVoltage && this.state.selectedVoltage.label[0] === 'L') {
       quote.saving = undefined;
       quote.offerprice = undefined;
     }
@@ -1872,9 +1876,12 @@ class ForkliftDetail extends Component {
 
     
     { (this.state.selectedVoltage && this.state.selectedVoltage.label[0] === 'S') ? (
-            <Offer price={this.state.totalprice} offeron={true} bigger={this.state.selectedBattery} model={this.state.model}/>
+            <Offer price={this.state.totalprice} offeron={true} bigger={true} model={this.state.model}/>
             ):null}
    
+   { (this.state.selectedVoltage && this.state.selectedVoltage.label[0] === 'H') ? (
+            <Offer price={this.state.totalprice} offeron={true} bigger={false} model={this.state.model}/>
+            ):null}
 
 
 {( this.state.modeldescription && this.state.modeldescription[0].description==='AA Series' ) ? (
