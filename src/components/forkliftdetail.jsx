@@ -534,6 +534,7 @@ class ForkliftDetail extends Component {
     console.log( "Voltage Selected", voltage );
 
     this.setState({
+      model: voltage.model,
       selectedVoltage: voltage,
       defaultbattery: voltage.defaultbattery,
       batterys: voltage.batteries,
