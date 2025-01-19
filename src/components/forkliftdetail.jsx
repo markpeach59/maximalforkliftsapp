@@ -244,6 +244,14 @@ class ForkliftDetail extends Component {
       dbatt = undefined;
       dcharg = undefined;
     }
+
+    console.log( 'CR ', this.state.chassisrequired);
+    if (this.state.chassisrequired){
+      dbatt = undefined;
+      dcharg = undefined;
+    }
+
+
     
     this.setState({
       powertrain: this.state.iengine,
@@ -509,8 +517,6 @@ class ForkliftDetail extends Component {
     : 0;
 
     let newbaseprice = voltage.price;
-    
-    
 
     console.log('Restricted', this.state.restricted);
 
@@ -550,32 +556,46 @@ class ForkliftDetail extends Component {
 
 
   handleChassisSel = (chassis) => {
-    const oldprice = this.state.selectedChassis
+
+    let baseprice = this.state.selectedChassis
       ? this.state.selectedChassis.price
       : 0;
-
-      const oldprice1 = this.state.selectedBattery
-      ? this.state.selectedBattery.price
-      : 0;
-
-      const oldprice2 = this.state.selectedCharger
-      ? this.state.selectedCharger.price
-      : 0;
-
-    const newprice = this.state.totalprice + chassis.price - oldprice - oldprice1 - oldprice2;
-
-    console.log( "Chassis Selected", chassis );
-
-    this.setState({
-      selectedChassis: chassis,
-      powertrain: chassis.label,
-      batterys: chassis.batteries,
-      chargers: undefined,
-      selectedBattery: undefined,
-      selectedCharger: undefined,
-      totalprice: newprice,
-    });
-  };
+  
+      let newbaseprice = chassis.price;
+      
+      console.log('Restricted', this.state.restricted);
+  
+      if (this.state.restricted ) {
+        if (this.state.selectedChassis) 
+          baseprice = this.state.selectedChassis.priceR;
+  
+        newbaseprice = chassis.priceR;
+      }
+  
+      console.log( 'Prices ', newbaseprice,' ', baseprice);
+  
+        const oldprice1 = this.state.selectedBattery
+        ? this.state.selectedBattery.price
+        : 0;
+  
+        const oldprice2 = this.state.selectedCharger
+        ? this.state.selectedCharger.price
+        : 0;
+  
+      const newprice = this.state.totalprice + newbaseprice - baseprice - oldprice1 - oldprice2;
+  
+      console.log( "Chassis Selected", chassis );
+  
+      this.setState({
+        selectedChassis: chassis,
+        powertrain: chassis.label,
+        batterys: chassis.batteries,
+        chargers: undefined,
+        selectedBattery: undefined,
+        selectedCharger: undefined,
+        totalprice: newprice,
+      });
+    };
 
   handleMastSel = (mast) => {
     this.setState({ selectedMast: mast });
@@ -988,10 +1008,28 @@ class ForkliftDetail extends Component {
     const newprice =
       this.state.totalprice + battery.price - oldprice - oldprice2;
 
-      this.setState({
-        selectedBattery: battery,
-        totalprice: newprice,
-      });
+      
+      console.log ('Chargers', battery.chargers)
+
+      if (battery.chargers !== undefined){
+        this.setState({
+          selectedBattery: battery,
+          selectedCharger: undefined,
+          chargers: battery.chargers,
+          totalprice: newprice,
+        });
+
+      } else {
+        this.setState({
+          selectedBattery: battery,
+          totalprice: newprice,
+        });
+
+
+      }
+      
+
+  
 
       /*
     this.setState({
@@ -2170,7 +2208,7 @@ class ForkliftDetail extends Component {
               />
             ) : null}
 
-            
+            {console.log('chargers', this.state.chargers)}
             {this.state.chargers && this.state.chargers.length > 0 ? (
               <Chargers
                 chargers={this.state.chargers}
