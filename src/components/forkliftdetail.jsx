@@ -1012,7 +1012,10 @@ class ForkliftDetail extends Component {
       console.log ('Chargers', battery.chargers)
      /* what about chargers on their own */
 
-      if (battery.chargers !== undefined){
+    
+
+      if (battery.chargers && battery.chargers.length > 0 ){
+
         this.setState({
           selectedBattery: battery,
           selectedCharger: undefined,
@@ -1021,11 +1024,11 @@ class ForkliftDetail extends Component {
         });
 
       } else {
+    
         this.setState({
           selectedBattery: battery,
           totalprice: newprice,
         });
-
 
       }
       
