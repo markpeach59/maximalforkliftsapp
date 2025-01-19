@@ -1010,6 +1010,7 @@ class ForkliftDetail extends Component {
 
       
       console.log ('Chargers', battery.chargers)
+     /* what about chargers on their own */
 
       if (battery.chargers !== undefined){
         this.setState({
