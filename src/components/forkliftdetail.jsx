@@ -316,8 +316,9 @@ const ForkliftDetail = () => {
     updateTotalPrice(mast, selectedMast);
   };
 
-  const handleMastSizeSel = (mastSize) => {
+  const handleMastSizeSel = (mastSize, mastType) => {
     setSelectedMastSize(mastSize);
+    setSelectedMast(mastType);
     updateTotalPrice(mastSize, selectedMastSize);
   };
 
