@@ -222,7 +222,49 @@ const ForkliftDetail = () => {
   // Handler for reset options
   const handleResetOptions = () => {
     setTotalprice(baseprice);
-    // In a full implementation, this would reset all selected options
+    
+    // Reset all selected options to null
+    setSelectedVoltage(null);
+    setSelectedChassis(null);
+    setSelectedEngine(null);
+    setSelectedMast(null);
+    setSelectedMastSize(null);
+    setSelectedValve(null);
+    setSelectedFork(null);
+    setSelectedFork2d(null);
+    setSelectedSideShift(null);
+    setSelectedForkpositioner(null);
+    setSelectedController(null);
+    setSelectedTyre(null);
+    setSelectedHalolight(null);
+    setSelectedSafetybluespot(null);
+    setSelectedColdStoreProt(null);
+    setSelectedReargrab(null);
+    setSelectedPlatform(null);
+    setSelectedArmguard(null);
+    setSelectedSideleverhydraulic(null);
+    setSelectedSteering(null);
+    setSelectedRoller(null);
+    setSelectedStabiliser(null);
+    setSelectedLiftybutton(null);
+    setSelectedDisplaywithcamera(null);
+    setSelectedPincode(null);
+    setSelectedLoadbackrest(null);
+    setSelectedSeat(null);
+    setSelectedBatterycompartment(null);
+    setSelectedBattery(null);
+    setSelectedCharger(null);
+    setSelectedSpare(null);
+    setSelectedBfs(null);
+    setSelectedTrolley(null);
+    setSelectedBlinkey(null);
+    setSelectedSideextractionbattery(null);
+    setSelectedCabin(null);
+    setSelectedHeater(null);
+    setSelectedAircon(null);
+    setSelectedUpsweptexhaust(null);
+    setSelectedPrecleaner(null);
+    setSelectedHeavydutyairfilter(null);
   };
 
   // Handler for quote save
