@@ -581,6 +581,50 @@ const ForkliftDetail = () => {
             </p>
           </div>
           
+          {/* Display selected options */}
+          <div style={{ marginTop: '20px', marginBottom: '20px' }}>
+            <h4>Selected Options:</h4>
+            {selectedMast && selectedMastSize && (
+              <p>Mast: {selectedMast} {selectedMastSize.mastlength}mm</p>
+            )}
+            {selectedValve && <p>Valve: {selectedValve.valvetype}</p>}
+            {selectedFork && <p>Fork: {selectedFork.forklength}mm</p>}
+            {selectedFork2d && <p>Fork 2D: {selectedFork2d.forklength}mm</p>}
+            {selectedSideShift && <p>Side Shift: {selectedSideShift.sideshifttype}</p>}
+            {selectedForkpositioner && <p>Fork Positioner: {selectedForkpositioner.forkpositionertype}</p>}
+            {selectedController && <p>Controller: {selectedController.controllertype}</p>}
+            {selectedTyre && <p>Tyre: {selectedTyre.tyretype}</p>}
+            {selectedHalolight && <p>Halo Light: {selectedHalolight.halolighttype || 'Yes'}</p>}
+            {selectedSafetybluespot && <p>Safety Blue Spot: {selectedSafetybluespot.safetybluespottype || 'Yes'}</p>}
+            {selectedColdStoreProt && <p>Cold Store Protection: {selectedColdStoreProt.coldstoreprot}</p>}
+            {selectedReargrab && <p>Rear Grab: {selectedReargrab.reargrabtype}</p>}
+            {selectedPlatform && <p>Platform: {selectedPlatform.platformtype}</p>}
+            {selectedArmguard && <p>Arm Guard: {selectedArmguard.armguardtype}</p>}
+            {selectedSideleverhydraulic && <p>Side Lever Hydraulic: {selectedSideleverhydraulic.sideleverhydraulictype}</p>}
+            {selectedSteering && <p>Steering: {selectedSteering.steeringtype}</p>}
+            {selectedRoller && <p>Roller: {selectedRoller.rollertype}</p>}
+            {selectedStabiliser && <p>Stabiliser: {selectedStabiliser.stabilisertype}</p>}
+            {selectedLiftybutton && <p>Lifty Button: {selectedLiftybutton.liftybuttontype}</p>}
+            {selectedDisplaywithcamera && <p>Display with Camera: {selectedDisplaywithcamera.displaywithcameratype}</p>}
+            {selectedPincode && <p>Pin Code: {selectedPincode.pincodetype}</p>}
+            {selectedLoadbackrest && <p>Load Backrest: {selectedLoadbackrest.loadbackresttype}</p>}
+            {selectedSeat && <p>Seat: {selectedSeat.seattype}</p>}
+            {selectedBatterycompartment && <p>Battery Compartment: {selectedBatterycompartment.batterycompartmenttype}</p>}
+            {selectedBattery && <p>Battery: {selectedBattery.batterytype}</p>}
+            {selectedCharger && <p>Charger: {selectedCharger.chargertype}</p>}
+            {selectedSpare && <p>Spare Battery: {selectedSpare.sparetype}</p>}
+            {selectedBfs && <p>BFS: {selectedBfs.bfstype}</p>}
+            {selectedTrolley && <p>Trolley: {selectedTrolley.trolleytype}</p>}
+            {selectedBlinkey && <p>Blinkey: {selectedBlinkey.blinkeytype}</p>}
+            {selectedSideextractionbattery && <p>Side Extraction Battery: {selectedSideextractionbattery.sideextractionbatterytype}</p>}
+            {selectedCabin && <p>Cabin: {selectedCabin.cabinoption}</p>}
+            {selectedHeater && <p>Heater: {selectedHeater.heatertype}</p>}
+            {selectedAircon && <p>Air Conditioning: {selectedAircon.aircontype}</p>}
+            {selectedUpsweptexhaust && <p>Upswept Exhaust: {selectedUpsweptexhaust.upsweptexhausttype}</p>}
+            {selectedPrecleaner && <p>Precleaner: {selectedPrecleaner.precleanertype}</p>}
+            {selectedHeavydutyairfilter && <p>Heavy Duty Air Filter: {selectedHeavydutyairfilter.heavydutyairfiltertype}</p>}
+          </div>
+          
           <div>
             <strong>
               Quote Price: £{totalprice + parseInt(markup)}
