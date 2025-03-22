@@ -1,63 +1,57 @@
-import React, { Component } from "react";
-
+import React, { useState, useRef } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-
 import { registerDealer } from "../services/dealerService";
-
 import "typeface-roboto";
 
-class RegisterDealerForm extends Component {
-  state = {
-    dealername: { value: null, error: false, helperText: null },
-    dealermarkup: { value: null, error: false, helperText: null }
-  };
+const RegisterDealerForm = () => {
+  const [dealername, setDealername] = useState({ value: null, error: false, helperText: null });
+  const [dealermarkup, setDealermarkup] = useState({ value: null, error: false, helperText: null });
+  
+  const dealernameInputRef = useRef(null);
 
-  handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-
-    this.doSubmit();
+    doSubmit();
   };
 
-  doSubmit = async () => {
+  const doSubmit = async () => {
     try {
-      const { data } = await registerDealer(this.dealernameInput.value);
+      const { data } = await registerDealer(dealernameInputRef.current.value);
       console.log("registered as ", data);
     } catch (error) {
       if (error.response) {
-        const dealername = { ...this.state.dealername };
-        dealername.error = true;
-        dealername.helperText = error.response.data;
-
-        this.setState({ dealername });
+        setDealername({
+          ...dealername,
+          error: true,
+          helperText: error.response.data
+        });
       }
       console.log("here", error);
     }
   };
 
-  render() {
-    return (
-      <React.Fragment>
-        <h1>Dealer Registration</h1>
+  return (
+    <React.Fragment>
+      <h1>Dealer Registration</h1>
 
-        <form onSubmit={this.handleSubmit}>
-          <TextField
-            label="Enter Dealer Name"
-            fullWidth
-            autoFocus
-            required
-            inputRef={input => (this.dealernameInput = input)}
-            error={this.state.dealername.error}
-            helperText={this.state.dealername.helperText}
-          />
+      <form onSubmit={handleSubmit}>
+        <TextField
+          label="Enter Dealer Name"
+          fullWidth
+          autoFocus
+          required
+          inputRef={dealernameInputRef}
+          error={dealername.error}
+          helperText={dealername.helperText}
+        />
 
-          <Button type="submit" color="primary">
-            Register
-          </Button>
-        </form>
-      </React.Fragment>
-    );
-  }
-}
+        <Button type="submit" color="primary">
+          Register
+        </Button>
+      </form>
+    </React.Fragment>
+  );
+};
 
 export default RegisterDealerForm;

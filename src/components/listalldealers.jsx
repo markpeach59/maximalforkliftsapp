@@ -1,69 +1,58 @@
-//import _ from "lodash";
-import React, { Component } from "react";
-
-//import { Link } from "react-router-dom";
-
+import React, { useState, useEffect } from "react";
 import { getDealers } from "../services/dealerService";
-
 import Grid from "@mui/material/Grid";
-//import Button from "@mui/material/Button";
-
 import Table from "@mui/material/Table";
 import TableHead from "@mui/material/TableHead";
-
 import TableBody from "@mui/material/TableBody";
-
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
-
 import "typeface-roboto";
 
-class ListAllDealers extends Component {
-  state = {
-    dealers: [],
-  };
+const ListAllDealers = () => {
+  const [dealers, setDealers] = useState([]);
 
-  async componentDidMount() {
-    const { data: dealers } = await getDealers();
-    //console.log("Dealers Returned", dealers);
+  useEffect(() => {
+    const fetchDealers = async () => {
+      try {
+        const { data: dealersData } = await getDealers();
+        setDealers(dealersData);
+      } catch (error) {
+        console.error("Error fetching dealers:", error);
+        setDealers([]);
+      }
+    };
 
-    this.setState({
-      dealers,
-    });
-  }
+    fetchDealers();
+  }, []);
 
-  render() {
-    const d = this.state.dealers;
+  const { length: count } = dealers;
 
-    const { length: count } = this.state.dealers;
+  if (count === 0) return <p>There are no Dealers in the database</p>;
 
-    if (count === 0) return <p>There are no Dealers in the database</p>;
+  return (
+    <React.Fragment>
+      <Grid container spacing={2}>
+        <Grid item xs={8}>
+          <h2>List of Dealers</h2>
 
-    return (
-      <React.Fragment>
-        <Grid container spacing={2}>
-          <Grid item xs={8}>
-            <h2>List of Dealers</h2>
-
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell align="left">Dealer Name</TableCell>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell align="left">Dealer Name</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {dealers.map((x) => (
+                <TableRow key={x._id}>
+                  <TableCell align="left">{x.dealername}</TableCell>
                 </TableRow>
-              </TableHead>
-              <TableBody>
-                {d.map((x) => (
-                  <TableRow key={x._id}>
-                    <TableCell align="left"> {x.dealername}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </Grid>
+              ))}
+            </TableBody>
+          </Table>
         </Grid>
-      </React.Fragment>
-    );
-  }
-}
+      </Grid>
+    </React.Fragment>
+  );
+};
 
 export default ListAllDealers;

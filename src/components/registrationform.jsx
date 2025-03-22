@@ -1,84 +1,79 @@
-import React, { Component } from "react";
-
+import React, { useState, useRef } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-
 import { registerUser } from "../services/userService";
-
 import "typeface-roboto";
 
-class RegisterForm extends Component {
-  state = {
-    name: { value: null, error: false, helperText: null },
-    email: { value: null, error: false, helperText: null },
-    password: { value: null, error: false, helperText: null }
-  };
+const RegisterForm = () => {
+  const [name, setName] = useState({ value: null, error: false, helperText: null });
+  const [email, setEmail] = useState({ value: null, error: false, helperText: null });
+  const [password, setPassword] = useState({ value: null, error: false, helperText: null });
+  
+  const nameInputRef = useRef(null);
+  const emailInputRef = useRef(null);
+  const passwordInputRef = useRef(null);
 
-  handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-
-    this.doSubmit();
+    doSubmit();
   };
 
-  doSubmit = async () => {
+  const doSubmit = async () => {
     try {
       const { data } = await registerUser(
-        this.nameInput.value,
-        this.emailInput.value.toLowerCase(),
-        this.passwordInput.value
+        nameInputRef.current.value,
+        emailInputRef.current.value.toLowerCase(),
+        passwordInputRef.current.value
       );
       console.log("registered as ", data);
-      //localStorage.setItem("token", jwt);
       window.location = "/login";
     } catch (error) {
       if (error.response && error.response.status === 400) {
-        const email = { ...this.state.email };
-        email.error = true;
-        email.helperText = error.response.data;
-
-        this.setState({ email });
+        setEmail({
+          ...email,
+          error: true,
+          helperText: error.response.data
+        });
       }
     }
   };
 
-  render() {
-    return (
-      <React.Fragment>
-        <h1>Registration</h1>
+  return (
+    <React.Fragment>
+      <h1>Registration</h1>
 
-        <form onSubmit={this.handleSubmit}>
-          <TextField
-            label="Enter your full name"
-            fullWidth
-            autoFocus
-            required
-            inputRef={input => (this.nameInput = input)}
-            error={this.state.name.error}
-            helperText={this.state.name.helperText}
-          />
-          <TextField
-            label="Enter your email"
-            fullWidth
-            autoFocus
-            required
-            inputRef={input => (this.emailInput = input)}
-            error={this.state.email.error}
-            helperText={this.state.email.helperText}
-          />
-          <TextField
-            label="Enter your password"
-            fullWidth
-            required
-            type="password"
-            inputRef={input => (this.passwordInput = input)}
-          />
-          <Button type="submit" color="primary">
-            Register
-          </Button>
-        </form>
-      </React.Fragment>
-    );
-  }
-}
+      <form onSubmit={handleSubmit}>
+        <TextField
+          label="Enter your full name"
+          fullWidth
+          autoFocus
+          required
+          inputRef={nameInputRef}
+          error={name.error}
+          helperText={name.helperText}
+        />
+        <TextField
+          label="Enter your email"
+          fullWidth
+          autoFocus
+          required
+          inputRef={emailInputRef}
+          error={email.error}
+          helperText={email.helperText}
+        />
+        <TextField
+          label="Enter your password"
+          fullWidth
+          required
+          type="password"
+          inputRef={passwordInputRef}
+        />
+        <Button type="submit" color="primary">
+          Register
+        </Button>
+      </form>
+    </React.Fragment>
+  );
+};
 
 export default RegisterForm;
