@@ -632,7 +632,17 @@ const ForkliftDetail = () => {
           </div>
           
           <div>
-            <QuoteSave onQuoteSave={handleQuoteSave} forklift={{...forkliftData, totalprice, markup}} />
+            <QuoteSave 
+              onQuoteSave={handleQuoteSave} 
+              forklift={{
+                ...forkliftData, 
+                totalprice, 
+                markup, 
+                selectedSeat, 
+                selectedVoltage, 
+                selectedChassis
+              }} 
+            />
             <Markup currentMarkup={markup} onMarkup={handleMarkup} />
           </div>
         </Grid>
