@@ -692,17 +692,19 @@ const ForkliftDetail = () => {
             </React.Fragment>
           )}
 
-          {forkliftData.halolights && forkliftData.halolights.length > 0 && (
+          {(forkliftData.halolights || forkliftData.halolight) && 
+           (forkliftData.halolights?.length > 0 || forkliftData.halolight?.length > 0) && (
             <Halolight
-              halolights={forkliftData.halolights}
+              halolights={forkliftData.halolights || forkliftData.halolight}
               selectedHalolight={selectedHalolight}
               onHalolightSel={handleHalolightSel}
             />
           )}
 
-          {forkliftData.safetybluespots && forkliftData.safetybluespots.length > 0 && (
+          {(forkliftData.safetybluespots || forkliftData.safetybluespot) && 
+           (forkliftData.safetybluespots?.length > 0 || forkliftData.safetybluespot?.length > 0) && (
             <Safetybluespot
-              safetybluespots={forkliftData.safetybluespots}
+              safetybluespots={forkliftData.safetybluespots || forkliftData.safetybluespot}
               selectedSafetybluespot={selectedSafetybluespot}
               onSafetybluespotSel={handleSafetybluespotSel}
             />
@@ -804,11 +806,12 @@ const ForkliftDetail = () => {
             />
           )}
 
-          {forkliftData.seats && forkliftData.seats.length > 0 && (
+          {(forkliftData.seats || forkliftData.seat) && 
+           (forkliftData.seats?.length > 0 || forkliftData.seat?.length > 0) && (
             <React.Fragment>
               <Viewseats /><br />
               <Seats
-                seats={forkliftData.seats}
+                seats={forkliftData.seats || forkliftData.seat}
                 selectedSeat={selectedSeat}
                 onSeatSel={handleSeatSel}
               />
@@ -823,9 +826,10 @@ const ForkliftDetail = () => {
             />
           )}
 
-          {forkliftData.batterys && forkliftData.batterys.length > 0 && (
+          {(forkliftData.batterys || forkliftData.batteries) && 
+           (forkliftData.batterys?.length > 0 || forkliftData.batteries?.length > 0) && (
             <Batterys
-              batterys={forkliftData.batterys}
+              batterys={forkliftData.batterys || forkliftData.batteries}
               selectedBattery={selectedBattery}
               onBatterySel={handleBatterySel}
               batteryConstraint={batteryconstraint}
@@ -880,9 +884,10 @@ const ForkliftDetail = () => {
             />
           )}
 
-          {forkliftData.cabins && forkliftData.cabins.length > 0 && (
+          {(forkliftData.cabins || forkliftData.cabin) && 
+           (forkliftData.cabins?.length > 0 || forkliftData.cabin?.length > 0) && (
             <Cabins
-              cabins={forkliftData.cabins}
+              cabins={forkliftData.cabins || forkliftData.cabin}
               selectedCabin={selectedCabin}
               onCabinSel={handleCabinSel}
               selectedUpsweptexhaust={selectedUpsweptexhaust}
