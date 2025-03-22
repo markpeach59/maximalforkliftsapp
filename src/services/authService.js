@@ -23,7 +23,9 @@ export  function logout() {
 }
 
 export function getJwt() {
-  return localStorage.getItem("token");
+  const token = localStorage.getItem("token");
+  console.log("Retrieved JWT token:", token ? "Token exists" : "No token");
+  return token;
 }
 
 export function getCurrentUser() {

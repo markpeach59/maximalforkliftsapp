@@ -271,6 +271,7 @@ const ForkliftDetail = () => {
   const handleQuoteSave = async () => {
     if (!forkliftData || !user) return;
     
+    // Create the quote object with all the individual fields
     const quote = {
       userid: user._id,
       model: forkliftData.model,
@@ -279,14 +280,70 @@ const ForkliftDetail = () => {
       capacity: forkliftData.capacity,
       engtype: forkliftData.engType,
       powertrain: forkliftData.powertrain,
-      baseprice: baseprice
+      baseprice: baseprice,
+      imgname: forkliftData.imgName, // Include the image name
+      
+      // Include all selected options as individual fields
+      masttype: selectedMast || "",
+      mastsize: selectedMastSize ? selectedMastSize.mastlength : "",
+      closedheight: selectedMastSize ? selectedMastSize.closedheight : "",
+      freeliftheight: selectedMastSize ? selectedMastSize.freelift : "",
+      
+      valve: selectedValve ? selectedValve.valvetype : "",
+      forks: selectedFork ? selectedFork.forklength : "",
+      fork2d: selectedFork2d ? selectedFork2d.forklength : "",
+      sideshift: selectedSideShift ? selectedSideShift.sideshifttype : "",
+      forkpositioner: selectedForkpositioner ? true : false,
+      
+      controller: selectedController ? selectedController.controllertype : "",
+      tyre: selectedTyre ? selectedTyre.tyretype : "",
+      
+      pincode: selectedPincode ? true : false,
+      liftybutton: selectedLiftybutton ? true : false,
+      roller: selectedRoller ? selectedRoller.rollertype : "",
+      displaywithcamera: selectedDisplaywithcamera ? true : false,
+      safetybluespot: selectedSafetybluespot ? true : false,
+      
+      halolight: selectedHalolight ? true : false,
+      upsweptexhaust: selectedUpsweptexhaust ? true : false,
+      precleaner: selectedPrecleaner ? true : false,
+      heavydutyairfilter: selectedHeavydutyairfilter ? true : false,
+      
+      coldstoreprot: selectedColdStoreProt ? true : false,
+      seat: selectedSeat ? selectedSeat.seattype : "",
+      cabin: selectedCabin ? selectedCabin.cabinoption : "",
+      
+      aircon: selectedAircon ? true : false,
+      heater: selectedHeater ? true : false,
+      reargrab: selectedReargrab ? true : false,
+      sideleverhydraulic: selectedSideleverhydraulic ? true : false,
+      
+      battery: selectedBattery ? selectedBattery.batterytype : "",
+      charger: selectedCharger ? selectedCharger.chargertype : "",
+      spare: selectedSpare ? selectedSpare.sparetype : "",
+      
+      armguard: selectedArmguard ? true : false,
+      platform: selectedPlatform ? true : false,
+      loadbackrest: selectedLoadbackrest ? true : false,
+      steering: selectedSteering ? true : false,
+      
+      bfs: selectedBfs ? true : false,
+      manualtrolley: selectedTrolley ? true : false,
+      blinkey: selectedBlinkey ? true : false,
+      stabiliser: selectedStabiliser ? true : false,
+      sideextractionbattery: selectedSideextractionbattery ? true : false,
+      
+      order: false
     };
+    
+    console.log("Saving quote:", quote);
     
     try {
       const response = await savequote(quote);
+      console.log("Quote saved successfully:", response.data);
       navigate(`/quotes/${response.data._id}`);
     } catch (error) {
-      console.log("Failed to save quote:", error);
+      console.error("Failed to save quote:", error);
     }
   };
 

@@ -17,6 +17,7 @@ axios.interceptors.response.use(null, error => {
 });
 
 function setJwt(jwt) {
+  console.log("Setting JWT token:", jwt ? "Token exists" : "No token");
   axios.defaults.headers.common["x-auth-token"] = jwt;
 }
 

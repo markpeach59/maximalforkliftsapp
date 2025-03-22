@@ -26,11 +26,24 @@ class Quotes extends Component {
   };
 
   async componentDidMount() {
-    const { data: quotes } = await getQuotes();
-    //console.log("Quotes Returned", quotes);
-    this.setState({
-      quotes,
-    });
+    try {
+      console.log("Fetching quotes...");
+      const response = await getQuotes();
+      console.log("Quotes API Response:", response);
+      
+      if (response && response.data) {
+        console.log("Quotes Returned", response.data);
+        this.setState({
+          quotes: response.data,
+        });
+      } else {
+        console.error("No data property in response:", response);
+        this.setState({ quotes: [] });
+      }
+    } catch (error) {
+      console.error("Error fetching quotes:", error);
+      this.setState({ quotes: [] });
+    }
   }
 
   render() {

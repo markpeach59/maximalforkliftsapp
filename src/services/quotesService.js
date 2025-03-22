@@ -4,7 +4,12 @@ import config from "../utils/config";
 const apiEndPoint = config.apiURL + "/quotes";
 
 export function getQuotes() {
-  return http.get(apiEndPoint);
+  console.log("Requesting quotes from:", apiEndPoint);
+  return http.get(apiEndPoint)
+    .catch(error => {
+      console.error("Error in getQuotes:", error);
+      throw error;
+    });
 }
 
 export function savequote(quote) {
