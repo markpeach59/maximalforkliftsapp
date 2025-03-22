@@ -102,6 +102,7 @@ const ForkliftDetail = () => {
   const [selectedSeat, setSelectedSeat] = useState(null);
   const [selectedBatterycompartment, setSelectedBatterycompartment] = useState(null);
   const [selectedBattery, setSelectedBattery] = useState(null);
+  // eslint-disable-next-line no-unused-vars
   const [batteryconstraint, setBatteryconstraint] = useState(null);
   const [selectedCharger, setSelectedCharger] = useState(null);
   const [selectedSpare, setSelectedSpare] = useState(null);

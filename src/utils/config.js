@@ -4,6 +4,8 @@ import config from "../config.json";
 const env = process.env.NODE_ENV || "development";
 const apiURL = config[env].apiURL;
 
-export default {
+const appConfig = {
   apiURL
 };
+
+export default appConfig;

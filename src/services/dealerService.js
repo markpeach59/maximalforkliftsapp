@@ -1,4 +1,3 @@
-import http from "./httpService";
 import config from "../utils/config";
 import auth from "./authService";
 import axios from "axios";

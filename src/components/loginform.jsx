@@ -10,7 +10,6 @@ import "typeface-roboto";
 
 const LoginForm = () => {
   const [email, setEmail] = useState({ value: null, error: false, helperText: null });
-  const [password, setPassword] = useState({ value: null, error: false, helperText: null });
   
   const emailInputRef = useRef(null);
   const passwordInputRef = useRef(null);
