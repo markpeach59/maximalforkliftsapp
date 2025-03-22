@@ -40,7 +40,8 @@ const exportedAuthObject = {
   login,
   loginWithJwt,
   logout,
-  getCurrentUser
+  getCurrentUser,
+  getJwt
 };
 
 export default exportedAuthObject;
