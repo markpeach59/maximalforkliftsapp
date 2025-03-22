@@ -1,21 +1,18 @@
-import { createTheme } from "@material-ui/core/styles";
+import { createTheme } from "@mui/material/styles";
 
 const myTheme = createTheme({
-  root: {
-    display: "flex",
-  }, 
-  typography: {
-    fontFamily: "Roboto",
-    
-    },
- 
-  overrides: {
+  components: {
     MuiAppBar: {
-      colorPrimary: {
-        backgroundColor: "#C22424",
+      styleOverrides: {
+        colorPrimary: {
+          backgroundColor: "#C22424",
+        },
       },
     },
   },
+  typography: {
+    fontFamily: "Roboto",
+  },
 });
 
-export default createTheme(myTheme);
+export default myTheme;

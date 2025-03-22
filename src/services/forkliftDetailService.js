@@ -1,5 +1,5 @@
 import http from "./httpService";
-import config from "../config.json";
+import config from "../utils/config";
 
 export function getForkliftDetail(name) {
   const apiEndPoint = config.apiURL + "/forkliftdetails/" + name;

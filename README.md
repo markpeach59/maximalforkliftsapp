@@ -1,70 +1,54 @@
-# Getting Started with Create React App
+# Maximal Forklifts React Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is the frontend React application for Maximal Forklifts.
 
-## Available Scripts
+## Setup
 
-In the project directory, you can run:
+1. Install dependencies:
+   ```
+   npm install
+   ```
 
-### `npm start`
+2. Start the development server:
+   ```
+   npm start
+   ```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Configuration
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+The application can connect to either a local or remote API:
 
-### `npm test`
+- **Local API**: By default, the application connects to a local API at `http://localhost:3900/api`.
+- **Production API**: To use a production API, update the `apiURL` in `src/config.json` under the `production` section.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Environment Configuration
 
-### `npm run build`
+The application uses environment-based configuration to determine which API URL to use:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- **Development**: Uses the `development.apiURL` from `src/config.json`
+- **Production**: Uses the `production.apiURL` from `src/config.json`
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+To build for production:
+```
+npm run build
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## React 18 and MUI v5
 
-### `npm run eject`
+This application has been updated to use React 18 and MUI v5. Key changes include:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+1. Converted class components to functional components using React hooks
+2. Updated Material-UI v4 to MUI v5
+3. Updated React Router v5 to React Router v6
+4. Modernized the styling approach using MUI v5's styling system
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Authentication
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+The application uses JWT for authentication. Users can log in using their email and password.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Protected Routes
 
-## Learn More
+The application includes protected routes that require authentication:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- **ProtectedRoute**: Requires a logged-in user
+- **ProtectedAdminRoute**: Requires a logged-in user with admin privileges

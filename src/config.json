@@ -1,1 +1,8 @@
-{ "apiURL": "http://localhost:3900/api" }
+{
+  "development": {
+    "apiURL": "http://localhost:3900/api"
+  },
+  "production": {
+    "apiURL": "https://your-production-api-url.com/api"
+  }
+}

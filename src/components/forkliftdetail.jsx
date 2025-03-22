@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import auth from "../services/authService";
 import { getDealerDetail } from "../services/dealerService";
 
-import Grid from "@material-ui/core/Grid";
+import Grid from "@mui/material/Grid";
 
 import Masts from "./masts";
 import Forks from "./forks";
@@ -76,7 +76,7 @@ import Viewtyres from "./viewtyres";
 
 import OfferAAR from "./offerAAR";
 
-import Typography from "@material-ui/core/Typography";
+import Typography from "@mui/material/Typography";
 
 
 import "typeface-roboto";

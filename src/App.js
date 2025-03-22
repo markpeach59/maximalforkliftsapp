@@ -1,19 +1,18 @@
-import React, { Component } from "react";
-import { Route, Redirect, Switch, Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Routes, Route, Navigate, Link } from "react-router-dom";
 import ProtectedRoute from "./components/protectedroute";
 import ProtectedAdminRoute from "./components/protectedadminroute";
 
-import { ThemeProvider } from "@material-ui/core/styles";
+import { ThemeProvider } from "@mui/material/styles";
 import customtheme from "./style/theme";
 
-import Typography from "@material-ui/core/Typography";
-
-import Container from "@material-ui/core/Container";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Box from "@material-ui/core/Box";
-import AppBar from "@material-ui/core/AppBar";
-import ToolBar from "@material-ui/core/Toolbar";
-import Button from "@material-ui/core/Button";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import CssBaseline from "@mui/material/CssBaseline";
+import Box from "@mui/material/Box";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Button from "@mui/material/Button";
 
 import Forklifts from "./components/forklifts";
 import ForkliftDetail from "./components/forkliftdetail";
@@ -51,106 +50,91 @@ function Copyright() {
   );
 }
 
-class App extends Component {
-  state = {};
+function App() {
+  console.log("App component rendering");
+  const [user, setUser] = useState(null);
 
-  componentDidMount() {
-    const user = auth.getCurrentUser();
-    this.setState({ user });
+  useEffect(() => {
+    try {
+      console.log("App useEffect running");
+      const currentUser = auth.getCurrentUser();
+      console.log("Current user:", currentUser);
+      setUser(currentUser);
+      /* if logged in get dealer details */
+    } catch (error) {
+      console.error("Error in App useEffect:", error);
+    }
+  }, []);
 
-    /* if logged in get dealer details */
-  }
-
-  render() {
-    return (
-      <React.Fragment>
-        <ThemeProvider theme={customtheme}>
+  return (
+    <React.Fragment>
+      <ThemeProvider theme={customtheme}>
         <Container component="main">
           <CssBaseline />
-          {this.state.user && (
-            <AppBar>
-              <ToolBar>
-                {this.state.user ? "Hello " + this.state.user.fullname : null}
-                <Link to={{ pathname: "/" }} style={{ color: "#fff" }}>
+          {user && (
+            <AppBar position="static">
+              <Toolbar>
+                {user ? "Hello " + user.fullname : null}
+                <Link to="/forklifts" style={{ color: "#fff" }}>
                   <Button color="inherit">Forklifts</Button>
                 </Link>
 
-                <Link to={{ pathname: "/quotes" }} style={{ color: "#fff" }}>
+                <Link to="/quotes" style={{ color: "#fff" }}>
                   <Button color="inherit">Quotes</Button>
                 </Link>
 
-                <Link to={{ pathname: "/orders" }} style={{ color: "#fff" }}>
+                <Link to="/orders" style={{ color: "#fff" }}>
                   <Button color="inherit">Orders</Button>
                 </Link>
 
                 
-                {this.state.user &&
-                  (this.state.user.isAdmin || this.state.user.isMaximGB) && (
-                    <Link
-                      to={{ pathname: "/allquotes" }}
-                      style={{ color: "#fff" }}
-                    >
-                      <Button color="inherit">All Quotes</Button>
-                    </Link>
-                  )}
+                {user && (user.isAdmin || user.isMaximGB) && (
+                  <Link to="/allquotes" style={{ color: "#fff" }}>
+                    <Button color="inherit">All Quotes</Button>
+                  </Link>
+                )}
 
-                {this.state.user &&
-                  (this.state.user.isAdmin || this.state.user.isMaximGB) && (
-                    <Link
-                      to={{ pathname: "/allorders" }}
-                      style={{ color: "#fff" }}
-                    >
-                      <Button color="inherit">All Orders</Button>
-                    </Link>
-                  )}
+                {user && (user.isAdmin || user.isMaximGB) && (
+                  <Link to="/allorders" style={{ color: "#fff" }}>
+                    <Button color="inherit">All Orders</Button>
+                  </Link>
+                )}
 
-                {this.state.user && this.state.user.isAdmin && (
-                  <Link
-                    to={{ pathname: "/listallusers" }}
-                    style={{ color: "#fff" }}
-                  >
+                {user && user.isAdmin && (
+                  <Link to="/listallusers" style={{ color: "#fff" }}>
                     <Button color="inherit">All Users</Button>
                   </Link>
                 )}
 
-                {this.state.user && this.state.user.isAdmin && (
-                  <Link
-                    to={{ pathname: "/register" }}
-                    style={{ color: "#fff" }}
-                  >
+                {user && user.isAdmin && (
+                  <Link to="/register" style={{ color: "#fff" }}>
                     <Button color="inherit">Register User</Button>
                   </Link>
                 )}
 
-                {this.state.user && this.state.user.isAdmin && (
-                  <Link
-                    to={{ pathname: "/listalldealers" }}
-                    style={{ color: "#fff" }}
-                  >
+                {user && user.isAdmin && (
+                  <Link to="/listalldealers" style={{ color: "#fff" }}>
                     <Button color="inherit">All Dealers</Button>
                   </Link>
                 )}
 
-                {this.state.user && this.state.user.isAdmin && (
-                  <Link
-                    to={{ pathname: "/registerdealer" }}
-                    style={{ color: "#fff" }}
-                  >
+                {user && user.isAdmin && (
+                  <Link to="/registerdealer" style={{ color: "#fff" }}>
                     <Button color="inherit">Register Dealer</Button>
                   </Link>
                 )}
 
-                {this.state.user && (
-                  <Link to={{ pathname: "/logout" }} style={{ color: "#fff" }}>
+                {user && (
+                  <Link to="/logout" style={{ color: "#fff" }}>
                     <Button color="inherit">Logout</Button>
                   </Link>
                 )}
-                {!this.state.user && (
-                  <Link to={{ pathname: "/login" }} style={{ color: "#fff" }}>
+                {!user && (
+                  <Link to="/login" style={{ color: "#fff" }}>
                     <Button color="inherit">Login</Button>
                   </Link>
                 )}
-              </ToolBar>
+              </Toolbar>
             </AppBar>
           )}
           <div>
@@ -159,43 +143,31 @@ class App extends Component {
           
           
           <div>
-            <Switch>
-              <ProtectedRoute path="/register" component={RegistrationForm} />
-              <ProtectedAdminRoute
-                path="/registerdealer"
-                component={DealerRegistrationForm}
-              />
-              <Route path="/login" component={LoginForm} />
-              <Route path="/logout" component={Logout} />
-              <ProtectedRoute
-                exact
-                path="/forkliftdetail/:modelName"
-                component={ForkliftDetail}
-              />
-              <ProtectedRoute path="/forklifts" component={Forklifts} />
-              <ProtectedRoute
-                exact
-                path="/quotes/:_id"
-                component={QuoteDetail}
-              />
-              <ProtectedRoute path="/quotes" component={Quotes} />
-              <ProtectedRoute
-                exact
-                path="/orders/:_id"
-                component={OrderDetail}
-              />
-              <ProtectedRoute path="/orders" component={Orders} />
-              <ProtectedRoute path="/listallusers" component={ListAllUsers} />
-              <ProtectedRoute
-                path="/listalldealers"
-                component={ListAllDealers}
-              />
-              <ProtectedRoute path="/allquotes" component={AllQuotes} />
-              <ProtectedRoute path="/allorders" component={AllOrders} />
-              <Route path="/not-found" component={NotFound} />
-              <Redirect from="/" exact to="/forklifts" />
-              <Redirect to="/not-found" />
-            </Switch>
+            {!user && (
+              <>
+                <h1>Welcome to Maximal Forklifts</h1>
+                <p>Please log in to access the application.</p>
+              </>
+            )}
+            <Routes>
+              <Route path="/register" element={<ProtectedRoute><RegistrationForm /></ProtectedRoute>} />
+              <Route path="/registerdealer" element={<ProtectedAdminRoute><DealerRegistrationForm /></ProtectedAdminRoute>} />
+              <Route path="/login" element={<LoginForm />} />
+              <Route path="/logout" element={<Logout />} />
+              <Route path="/forkliftdetail/:modelName" element={<ProtectedRoute><ForkliftDetail /></ProtectedRoute>} />
+              <Route path="/forklifts" element={<ProtectedRoute><Forklifts /></ProtectedRoute>} />
+              <Route path="/quotes/:_id" element={<ProtectedRoute><QuoteDetail /></ProtectedRoute>} />
+              <Route path="/quotes" element={<ProtectedRoute><Quotes /></ProtectedRoute>} />
+              <Route path="/orders/:_id" element={<ProtectedRoute><OrderDetail /></ProtectedRoute>} />
+              <Route path="/orders" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
+              <Route path="/listallusers" element={<ProtectedRoute><ListAllUsers /></ProtectedRoute>} />
+              <Route path="/listalldealers" element={<ProtectedRoute><ListAllDealers /></ProtectedRoute>} />
+              <Route path="/allquotes" element={<ProtectedRoute><AllQuotes /></ProtectedRoute>} />
+              <Route path="/allorders" element={<ProtectedRoute><AllOrders /></ProtectedRoute>} />
+              <Route path="/not-found" element={<NotFound />} />
+              <Route path="/" element={user ? <Navigate to="/forklifts" /> : <Navigate to="/login" />} />
+              <Route path="*" element={<Navigate to="/not-found" />} />
+            </Routes>
           </div>
           <Box mt={8}>
             <Copyright />
@@ -204,7 +176,6 @@ class App extends Component {
         </ThemeProvider>
       </React.Fragment>
     );
-  }
 }
 
 export default App;

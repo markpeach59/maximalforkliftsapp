@@ -8,18 +8,18 @@ import { confirmOrder } from "../services/ordersService";
 import { getUsers } from "../services/userService";
 import { getDealers } from "../services/dealerService";
 
-import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
+import Grid from "@mui/material/Grid";
+import Button from "@mui/material/Button";
 
-import Table from "@material-ui/core/Table";
-//import TableHead from "@material-ui/core/TableHead";
+import Table from "@mui/material/Table";
+//import TableHead from "@mui/material/TableHead";
 
-import TableBody from "@material-ui/core/TableBody";
+import TableBody from "@mui/material/TableBody";
 
-import TableRow from "@material-ui/core/TableRow";
-import TableCell from "@material-ui/core/TableCell";
+import TableRow from "@mui/material/TableRow";
+import TableCell from "@mui/material/TableCell";
 
-import TableHead from "@material-ui/core/TableHead";
+import TableHead from "@mui/material/TableHead";
 import Confirmorder from "./confirmorder";
 
 import "typeface-roboto";

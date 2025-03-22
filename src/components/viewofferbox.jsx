@@ -1,18 +1,17 @@
 import React, { useState } from "react";
-import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogActions from "@material-ui/core/DialogActions";
-import Snackbar from "@material-ui/core/Snackbar";
-import Grid from "@material-ui/core/Grid";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
+import Snackbar from "@mui/material/Snackbar";
+import Grid from "@mui/material/Grid";
 
 import ForkliftImg from "./forkliftimg";
 
 import "typeface-roboto";
 
-import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
+import Typography from "@mui/material/Typography";
 
 const ViewOfferBox = (props) => {
    
@@ -20,14 +19,6 @@ const ViewOfferBox = (props) => {
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
-
-  const useStyles = makeStyles({
-    root: {
-      color: 'red'
-    },
-  });
-
-  const classes = useStyles();
 
   const onDialogOpen = () => {
 
@@ -61,7 +52,7 @@ const ViewOfferBox = (props) => {
           <ForkliftImg imgName="M-SERIES-ROUGH-TERRAIN-18T-25T-35T-2WD.png" />
           <React.Fragment>
         <p>Rough Terrain Kubota 2607 Euro 5 Capacity : 3500Kg<br />3 Stage Full Free Lift Mast 4350mm,2330mm Closed,1450mm Free Lift<br />3rd Valve, 1200mm Forks, Integral Side Shift<br />Pneumatic Tyres, Safety Blue Spot, Full Comfort Suspension Seat<br /> OPS Safety System, Amber Beacon, Reverse Alarm, Full LED Lighting<br /><br /><strong>Normal Dealer Price : £23244</strong></p> 
-        <Typography className={classes.root} align="center">Special Offer Price &pound;19,100 each<br />Only 2 left</Typography>
+        <Typography sx={{ color: 'red' }} align="center">Special Offer Price &pound;19,100 each<br />Only 2 left</Typography>
          
          </React.Fragment>
 </Grid>

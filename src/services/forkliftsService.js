@@ -1,8 +1,7 @@
 import http from "./httpService";
-import config from "../config.json";
+import config from "../utils/config";
 
 const apiEndPoint = config.apiURL + "/forklifts";
-
 const apiEndPointR = config.apiURL + "/forklifts/list";
 
 export function getForklifts() {

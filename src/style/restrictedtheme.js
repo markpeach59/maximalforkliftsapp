@@ -1,21 +1,18 @@
-import { createTheme } from "@material-ui/core/styles";
+import { createTheme } from "@mui/material/styles";
 
 const restrictedTheme = createTheme({
-  root: {
-    display: "flex",
-  }, 
-  typography: {
-    fontFamily: "Roboto",
-    
-    },
- 
-  overrides: {
+  components: {
     MuiAppBar: {
-      colorPrimary: {
-        backgroundColor: "#a39e9d",
+      styleOverrides: {
+        colorPrimary: {
+          backgroundColor: "#a39e9d",
+        },
       },
     },
   },
+  typography: {
+    fontFamily: "Roboto",
+  },
 });
 
-export default createTheme(restrictedTheme);
+export default restrictedTheme;

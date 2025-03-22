@@ -1,6 +1,6 @@
 import React from "react";
-import Button from "@material-ui/core/Button";
-import Divider from "@material-ui/core/Divider";
+import Button from "@mui/material/Button";
+import Divider from "@mui/material/Divider";
 
 import "typeface-roboto";
 
