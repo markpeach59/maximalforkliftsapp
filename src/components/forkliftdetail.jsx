@@ -265,6 +265,8 @@ const ForkliftDetail = () => {
     setSelectedUpsweptexhaust(null);
     setSelectedPrecleaner(null);
     setSelectedHeavydutyairfilter(null);
+    
+    console.log("Reset options, new total price:", baseprice);
   };
 
   // Handler for quote save
@@ -400,8 +402,85 @@ const ForkliftDetail = () => {
   };
 
   const handleForkpositionerSel = (forkpositioner) => {
-    setSelectedForkpositioner(forkpositioner);
-    updateTotalPrice(forkpositioner, selectedForkpositioner);
+    // If deselecting the fork positioner
+    if (!forkpositioner) {
+      // Store the current fork positioner price to subtract it
+      const oldForkPositionerPrice = selectedForkpositioner ? 1510 : 0;
+      
+      // Store the current valve price to potentially subtract it
+      const oldValvePrice = selectedValve && selectedValve.valvetype === "3rd + 4th" ? 220 : 0;
+      
+      // Clear the selected fork positioner
+      setSelectedForkpositioner(null);
+      
+      // Calculate the new total by subtracting the fork positioner price
+      let newTotal = totalprice - oldForkPositionerPrice;
+      
+      // If the valve was automatically selected with the fork positioner, keep it selected
+      // but subtract its price from the total (it will be added back if needed)
+      if (selectedValve && selectedValve.valvetype === "3rd + 4th") {
+        newTotal -= oldValvePrice;
+      }
+      
+      console.log("Deselected fork positioner, new total:", newTotal);
+      setTotalprice(newTotal);
+      return;
+    }
+    
+    // Log the fork positioner details for debugging
+    console.log("Fork positioner selected:", forkpositioner);
+    console.log("Current total price:", totalprice);
+    
+    // Hard-coded prices from the seed data
+    const forkPositionerPrice = 1510;
+    const valvePrice = 220;
+    
+    // Create a new fork positioner object with the correct price
+    const forkPositionerWithPrice = {
+      ...forkpositioner,
+      price: forkPositionerPrice
+    };
+    
+    // Calculate the new total price by adding the fork positioner price
+    let newTotal = totalprice;
+    
+    // If there was already a fork positioner selected, subtract its price first
+    if (selectedForkpositioner) {
+      newTotal -= 1510; // Subtract the old fork positioner price
+      console.log("Subtracted old fork positioner price, new total:", newTotal);
+    }
+    
+    // Add the fork positioner price
+    newTotal += forkPositionerPrice;
+    console.log("Added fork positioner price, new total:", newTotal);
+    
+    // Set the selected fork positioner with the correct price
+    setSelectedForkpositioner(forkPositionerWithPrice);
+    
+    // Find the "3rd + 4th" valve option
+    let thirdPlusFourthValve = null;
+    if (forkliftData.valves) {
+      thirdPlusFourthValve = forkliftData.valves.find(valve => valve.valvetype === "3rd + 4th");
+      if (thirdPlusFourthValve) {
+        // If there was already a valve selected, subtract its price first
+        if (selectedValve) {
+          newTotal -= selectedValve.price;
+          console.log("Subtracted old valve price, new total:", newTotal);
+        }
+        
+        // Add the new valve price
+        newTotal += valvePrice;
+        console.log("Added new valve price, new total:", newTotal);
+        
+        // Set the selected valve
+        setSelectedValve(thirdPlusFourthValve);
+      }
+    }
+    
+    console.log("Final total price:", newTotal);
+    
+    // Update the state
+    setTotalprice(newTotal);
   };
 
   const handleControllerSel = (controller) => {
