@@ -935,6 +935,17 @@ const ForkliftDetail = () => {
             <strong>
               Quote Price: £{totalprice + parseInt(markup)}
             </strong>
+            
+            {/* Display required option warnings */}
+            {forkliftData.voltagerequired && !selectedVoltage && (
+              <p style={{ color: 'red' }}>Please select a Voltage Type</p>
+            )}
+            {forkliftData.chassisrequired && !selectedChassis && (
+              <p style={{ color: 'red' }}>Please select a Chassis Type</p>
+            )}
+            {forkliftData.seatrequired && !selectedSeat && (
+              <p style={{ color: 'red' }}>Please select a Seat Type</p>
+            )}
             {/* Calculate discount based on various conditions */}
             {(() => {
               const finalPrice = totalprice + parseInt(markup);
