@@ -15,6 +15,7 @@ import QuoteSave from "./quotesave";
 import Markup from "./markup";
 import Offertext from "./offertext";
 import Offer from "./offer";
+import OfferAAR from "./offerAAR";
 import Voltage from "./voltage";
 import Chassis from "./chassis";
 import Engines from "./engines";
@@ -296,6 +297,72 @@ const ForkliftDetail = () => {
   const handleQuoteSave = async () => {
     if (!forkliftData || !user) return;
     
+    // Calculate final price including markup
+    const finalPrice = totalprice + parseInt(markup);
+    
+    // Calculate savings and offer price
+    let saving = 0;
+    let offerprice = finalPrice;
+    
+    // Check if this is an AA Series model
+    const isAASeries = forkliftData.modeldescription && 
+                      forkliftData.modeldescription[0] && 
+                      forkliftData.modeldescription[0].description === 'AA Series';
+    
+    // Check if this is a Reach model
+    const isReachModel = (modelName && modelName.toLowerCase().includes('reach')) || 
+                        (forkliftData.model && forkliftData.model.toLowerCase().includes('reach')) ||
+                        (forkliftData.modeldescription && 
+                         forkliftData.modeldescription[0] && 
+                         forkliftData.modeldescription[0].description && 
+                         forkliftData.modeldescription[0].description.toLowerCase().includes('reach'));
+    
+    // Check if this is a Lithium Version chassis
+    const isLithiumVersion = selectedChassis && selectedChassis.label === 'Lithium Version';
+    
+    // Calculate savings based on model type and selected options
+    if (isAASeries || isLithiumVersion) {
+      // AA Series or Lithium Version get 2.5% discount
+      saving = Math.round(finalPrice * 0.025);
+    } else if (isReachModel) {
+      // Reach models get 3% discount
+      saving = Math.round(finalPrice * 0.03);
+    } else if (forkliftData.model === 'FBAX50-YWL') {
+      // FBAX50-YWL gets 3% discount
+      saving = Math.round(finalPrice * 0.03);
+    } else if (selectedVoltage && selectedVoltage.label && selectedVoltage.label[0] === 'S') {
+      // Voltage with label starting with 'S' (Standard) gets 15% discount
+      saving = Math.round(finalPrice * 0.15);
+    } else if (selectedVoltage && selectedVoltage.label && selectedVoltage.label[0] === 'H') {
+      // Voltage with label starting with 'H' (Heavy) gets 10% discount
+      saving = Math.round(finalPrice * 0.10);
+    } else if (forkliftData.offer && forkliftData.defaultbattery) {
+      // Default 10% discount if there's an offer and a default battery
+      saving = Math.round(finalPrice * 0.10);
+    } else if (forkliftData.offer && selectedBattery) {
+      // 15% discount if there's an offer and a selected battery
+      saving = Math.round(finalPrice * 0.15);
+    }
+    
+    // No discount for voltage with label starting with 'L' (Light)
+    if (selectedVoltage && selectedVoltage.label && selectedVoltage.label[0] === 'L') {
+      saving = 0;
+    }
+    
+    // Calculate offer price by subtracting savings from final price
+    if (saving > 0) {
+      offerprice = finalPrice - saving;
+    }
+    
+    console.log("Quote savings calculation:", {
+      isAASeries,
+      isReachModel,
+      isLithiumVersion,
+      finalPrice,
+      saving,
+      offerprice
+    });
+    
     // Create the quote object with all the individual fields
     const quote = {
       userid: user._id,
@@ -308,6 +375,8 @@ const ForkliftDetail = () => {
       baseprice: baseprice,
       imgname: forkliftData.imgName, // Include the image name
       offer: forkliftData.offer,
+      saving: saving, // Include the calculated savings amount
+      offerprice: offerprice - parseInt(markup), // Store the offer price without markup
       
       // Include all selected options as individual fields
       masttype: selectedMast || "",
@@ -855,11 +924,6 @@ const ForkliftDetail = () => {
   // Main render
   return (
     <React.Fragment>
-      {forkliftData.offer && (
-        <div>
-          <Offertext model={forkliftData.model} />
-        </div>
-      )}
 
       <Grid container>
         {user && (user.isAdmin || user.isMaximGB) && 
@@ -871,6 +935,45 @@ const ForkliftDetail = () => {
             <Typography>Restricted Pricing</Typography>
           )}
       </Grid>
+      
+      {/* Display offer text in header region below logo */}
+      <div>
+        {/* Debug information */}
+        {console.log("Model description:", forkliftData.modeldescription)}
+        {console.log("Model name:", modelName)}
+        {console.log("Is AA Series:", forkliftData.modeldescription && 
+                                    forkliftData.modeldescription[0] && 
+                                    forkliftData.modeldescription[0].description === 'AA Series')}
+        {console.log("Is Reach model:", modelName && modelName.includes('Reach'))}
+        
+        {/* Check if model is a Reach model */}
+        {console.log("Model:", forkliftData.model)}
+        {console.log("Is Reach model (by model name):", forkliftData.model && forkliftData.model.toLowerCase().includes('reach'))}
+        {console.log("Is Reach model (by model description):", forkliftData.modeldescription && 
+                                                             forkliftData.modeldescription[0] && 
+                                                             forkliftData.modeldescription[0].description && 
+                                                             forkliftData.modeldescription[0].description.toLowerCase().includes('reach'))}
+        
+        {/* Force display offer text for specific model types */}
+        <Offertext model={
+          forkliftData.modeldescription && 
+          forkliftData.modeldescription[0] && 
+          forkliftData.modeldescription[0].description === 'AA Series' 
+            ? 'AA' 
+            : (modelName && modelName.toLowerCase().includes('reach')) || 
+              (forkliftData.model && forkliftData.model.toLowerCase().includes('reach')) ||
+              (forkliftData.modeldescription && 
+               forkliftData.modeldescription[0] && 
+               forkliftData.modeldescription[0].description && 
+               forkliftData.modeldescription[0].description.toLowerCase().includes('reach'))
+              ? 'Reach' 
+              : forkliftData.model === 'FBAX50-YWL' 
+                ? 'FBAX50-YWL' 
+                : forkliftData.offer 
+                  ? forkliftData.model 
+                  : null
+        } />
+      </div>
 
       <Grid container spacing={2}>
         <Grid item xs={4}>
@@ -931,6 +1034,7 @@ const ForkliftDetail = () => {
             {selectedHeavydutyairfilter && <p>Heavy Duty Air Filter: {selectedHeavydutyairfilter.heavydutyairfiltertype}</p>}
           </div>
           
+          
           <div>
             <strong>
               Quote Price: £{totalprice + parseInt(markup)}
@@ -946,83 +1050,83 @@ const ForkliftDetail = () => {
             {forkliftData.seatrequired && !selectedSeat && (
               <p style={{ color: 'red' }}>Please select a Seat Type</p>
             )}
-            {/* Calculate discount based on various conditions */}
-            {(() => {
-              const finalPrice = totalprice + parseInt(markup);
-              let saving = 0;
-              let showOffer = false;
-              let isBigger = false;
-              
-              // Default 10% discount if there's an offer and a default battery
-              if (forkliftData.offer && forkliftData.defaultbattery) {
-                saving = Math.round(finalPrice * 0.10);
-                showOffer = true;
-              }
-              
-              // 15% discount if there's an offer and a selected battery
-              if (forkliftData.offer && selectedBattery) {
-                saving = Math.round(finalPrice * 0.15);
-                showOffer = true;
-                isBigger = true;
-              }
-              
-              // 3% discount specifically for the FBAX50-YWL model
-              if (forkliftData.model === 'FBAX50-YWL') {
-                saving = Math.round(finalPrice * 0.03);
-                showOffer = true;
-                isBigger = false;
-              }
-              
-              // 15% discount for voltage with label starting with 'S' (Standard)
-              if (selectedVoltage && selectedVoltage.label && selectedVoltage.label[0] === 'S') {
-                saving = Math.round(finalPrice * 0.15);
-                showOffer = true;
-                isBigger = true;
-              }
-              
-              // 10% discount for voltage with label starting with 'H' (Heavy)
-              if (selectedVoltage && selectedVoltage.label && selectedVoltage.label[0] === 'H') {
-                saving = Math.round(finalPrice * 0.10);
-                showOffer = true;
-                isBigger = false;
-              }
-              
-              // 2.5% discount for AA Series models
-              if (forkliftData.modeldescription && 
-                  forkliftData.modeldescription[0] && 
-                  forkliftData.modeldescription[0].description === 'AA Series') {
-                saving = Math.round(finalPrice * 0.025);
-                showOffer = true;
-                isBigger = false;
-              }
-              
-              // 3% discount for Lithium Version chassis
-              if (selectedChassis && selectedChassis.label === 'Lithium Version') {
-                saving = Math.round(finalPrice * 0.03);
-                showOffer = true;
-                isBigger = false;
-              }
-              
-              // No discount for voltage with label starting with 'L' (Light)
-              if (selectedVoltage && selectedVoltage.label && selectedVoltage.label[0] === 'L') {
-                saving = 0;
-                showOffer = false;
-              }
-              
-              // Return the Offer component if there's a discount to show
-              if (showOffer && saving > 0) {
-                return (
-                  <Offer 
-                    price={finalPrice} 
-                    offeron={true} 
-                    bigger={isBigger}
-                    model={forkliftData.model} 
-                  />
-                );
-              }
-              
-              return null;
-            })()}
+            
+            {/* Use OfferAAR component for AA Series and Lithium Version chassis */}
+            {(forkliftData.modeldescription && 
+                forkliftData.modeldescription[0] && 
+                forkliftData.modeldescription[0].description === 'AA Series') || 
+             (selectedChassis && selectedChassis.label === 'Lithium Version') ? (
+              <div>
+                {/* Use OfferAAR for AA Series and Lithium Version */}
+                <OfferAAR 
+                  price={totalprice + parseInt(markup)}
+                  modeldescription={forkliftData.modeldescription}
+                  chassis={selectedChassis}
+                />
+              </div>
+            ) : (
+              /* For other models, use the standard offer calculation */
+              (() => {
+                const finalPrice = totalprice + parseInt(markup);
+                let saving = 0;
+                let showOffer = false;
+                let isBigger = false;
+                
+                // 3% discount specifically for the FBAX50-YWL model
+                if (forkliftData.model === 'FBAX50-YWL') {
+                  saving = Math.round(finalPrice * 0.03);
+                  showOffer = true;
+                  isBigger = false;
+                }
+                
+                // 15% discount for voltage with label starting with 'S' (Standard)
+                else if (selectedVoltage && selectedVoltage.label && selectedVoltage.label[0] === 'S') {
+                  saving = Math.round(finalPrice * 0.15);
+                  showOffer = true;
+                  isBigger = true;
+                }
+                
+                // 10% discount for voltage with label starting with 'H' (Heavy)
+                else if (selectedVoltage && selectedVoltage.label && selectedVoltage.label[0] === 'H') {
+                  saving = Math.round(finalPrice * 0.10);
+                  showOffer = true;
+                  isBigger = false;
+                }
+                
+                // Default 10% discount if there's an offer and a default battery
+                else if (forkliftData.offer && forkliftData.defaultbattery) {
+                  saving = Math.round(finalPrice * 0.10);
+                  showOffer = true;
+                }
+                
+                // 15% discount if there's an offer and a selected battery
+                else if (forkliftData.offer && selectedBattery) {
+                  saving = Math.round(finalPrice * 0.15);
+                  showOffer = true;
+                  isBigger = true;
+                }
+                
+                // No discount for voltage with label starting with 'L' (Light)
+                if (selectedVoltage && selectedVoltage.label && selectedVoltage.label[0] === 'L') {
+                  saving = 0;
+                  showOffer = false;
+                }
+                
+                // Return the Offer component if there's a discount to show
+                if (showOffer && saving > 0) {
+                  return (
+                    <Offer 
+                      price={finalPrice} 
+                      offeron={true} 
+                      bigger={isBigger}
+                      model={forkliftData.model} 
+                    />
+                  );
+                }
+                
+                return null;
+              })()
+            )}
           </div>
           
           <div>
