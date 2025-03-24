@@ -1039,25 +1039,28 @@ const ForkliftDetail = () => {
             />
           )}
 
-          {forkliftData.liftybuttons && forkliftData.liftybuttons.length > 0 && (
+          {(forkliftData.liftybuttons || forkliftData.liftybutton) && 
+           (forkliftData.liftybuttons?.length > 0 || forkliftData.liftybutton?.length > 0) && (
             <Liftybutton
-              liftybuttons={forkliftData.liftybuttons}
+              liftybuttons={forkliftData.liftybuttons || forkliftData.liftybutton}
               selectedLiftybutton={selectedLiftybutton}
               onLiftybuttonSel={handleLiftybuttonSel}
             />
           )}
 
-          {forkliftData.displaywithcameras && forkliftData.displaywithcameras.length > 0 && (
+          {(forkliftData.displaywithcameras || forkliftData.displaywithcamera) && 
+           (forkliftData.displaywithcameras?.length > 0 || forkliftData.displaywithcamera?.length > 0) && (
             <Displaywithcamera
-              displaywithcameras={forkliftData.displaywithcameras}
+              displaywithcameras={forkliftData.displaywithcameras || forkliftData.displaywithcamera}
               selectedDisplaywithcamera={selectedDisplaywithcamera}
               onDisplaywithcameraSel={handleDisplaywithcameraSel}
             />
           )}
 
-          {forkliftData.pincodes && forkliftData.pincodes.length > 0 && (
+          {(forkliftData.pincodes || forkliftData.pincode) && 
+           (forkliftData.pincodes?.length > 0 || forkliftData.pincode?.length > 0) && (
             <Pincode
-              pincodes={forkliftData.pincodes}
+              pincodes={forkliftData.pincodes || forkliftData.pincode}
               selectedPincode={selectedPincode}
               onPincodeSel={handlePincodeSel}
             />
