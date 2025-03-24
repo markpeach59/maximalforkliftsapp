@@ -397,8 +397,74 @@ const ForkliftDetail = () => {
   };
 
   const handleSideShiftSel = (sideShift) => {
-    setSelectedSideShift(sideShift);
-    updateTotalPrice(sideShift, selectedSideShift);
+    // If selecting a side shift and fork positioner is already selected
+    if (sideShift && selectedForkpositioner) {
+      // Store the current fork positioner price to subtract it
+      const forkPositionerPrice = 1510;
+      
+      // Calculate the new total by removing fork positioner price and adding side shift price
+      let newTotal = totalprice - forkPositionerPrice;
+      
+      // Add the side shift price
+      if (sideShift.price) {
+        newTotal += sideShift.price;
+      }
+      
+      // Subtract the old side shift price if it exists
+      if (selectedSideShift && selectedSideShift.price) {
+        newTotal -= selectedSideShift.price;
+      }
+      
+      // Update the state
+      setSelectedSideShift(sideShift);
+      setSelectedForkpositioner(null);
+      setTotalprice(newTotal);
+      
+      console.log("Selected side shift, deselected fork positioner, new total:", newTotal);
+    } else if (sideShift) {
+      // When selecting a side shift (not deselecting)
+      
+      // Find the "3rd" valve option if it exists
+      let thirdValve = null;
+      if (forkliftData.valves) {
+        thirdValve = forkliftData.valves.find(valve => valve.valvetype === "3rd");
+      }
+      
+      // Calculate the new total price
+      let newTotal = totalprice;
+      
+      // Subtract the old side shift price if it exists
+      if (selectedSideShift && selectedSideShift.price) {
+        newTotal -= selectedSideShift.price;
+      }
+      
+      // Add the new side shift price
+      if (sideShift.price) {
+        newTotal += sideShift.price;
+      }
+      
+      // If a valve was already selected, subtract its price
+      if (selectedValve) {
+        newTotal -= selectedValve.price;
+      }
+      
+      // If we found a 3rd valve, add its price and select it
+      if (thirdValve) {
+        newTotal += thirdValve.price;
+        setSelectedValve(thirdValve);
+        console.log("Automatically selected 3rd valve with side shift");
+      }
+      
+      // Update the state
+      setSelectedSideShift(sideShift);
+      setTotalprice(newTotal);
+      
+      console.log("Selected side shift, new total:", newTotal);
+    } else {
+      // Deselecting side shift
+      setSelectedSideShift(null);
+      updateTotalPrice(null, selectedSideShift);
+    }
   };
 
   const handleForkpositionerSel = (forkpositioner) => {
@@ -448,6 +514,13 @@ const ForkliftDetail = () => {
     if (selectedForkpositioner) {
       newTotal -= 1510; // Subtract the old fork positioner price
       console.log("Subtracted old fork positioner price, new total:", newTotal);
+    }
+    
+    // If a side shift is selected, deselect it and subtract its price
+    if (selectedSideShift) {
+      newTotal -= selectedSideShift.price || 0;
+      console.log("Deselected side shift, subtracted price, new total:", newTotal);
+      setSelectedSideShift(null);
     }
     
     // Add the fork positioner price
