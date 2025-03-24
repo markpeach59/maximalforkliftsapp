@@ -220,7 +220,7 @@ const ForkliftDetail = () => {
   }, [modelName]);
 
   // Handler for reset options
-  const handleResetOptions = () => {
+  const handleResetOptions = async () => {
     setTotalprice(baseprice);
     
     // Reset all selected options to null
@@ -265,6 +265,28 @@ const ForkliftDetail = () => {
     setSelectedUpsweptexhaust(null);
     setSelectedPrecleaner(null);
     setSelectedHeavydutyairfilter(null);
+    
+    // Reset the forkliftData state to remove any battery options
+    try {
+      console.log("Resetting forklift data to original state");
+      const { data: forklift } = await getForkliftDetail(modelName);
+      
+      // Preserve the original state but remove any battery/charger options
+      setForkliftData(prevData => ({
+        ...prevData,
+        battery: null,
+        batterys: null,
+        charger: null,
+        chargers: null
+      }));
+      
+      // Clear the debug reference
+      if (window.debugBatteries) {
+        window.debugBatteries = null;
+      }
+    } catch (error) {
+      console.error("Error resetting forklift data:", error);
+    }
     
     console.log("Reset options, new total price:", baseprice);
   };
@@ -866,7 +888,6 @@ const ForkliftDetail = () => {
           
           {/* Display selected options */}
           <div style={{ marginTop: '20px', marginBottom: '20px' }}>
-            <h4>Selected Options:</h4>
             {selectedMast && selectedMastSize && (
               <p>Mast: {selectedMast} {selectedMastSize.mastlength}mm</p>
             )}
@@ -986,9 +1007,10 @@ const ForkliftDetail = () => {
             />
           )}
 
-          {forkliftData.fork2ds && forkliftData.fork2ds.length > 0 && (
+          {(forkliftData.fork2ds || forkliftData.fork2d || forkliftData.forks2d) && 
+           (forkliftData.fork2ds?.length > 0 || forkliftData.fork2d?.length > 0 || forkliftData.forks2d?.length > 0) && (
             <Fork2ds
-              fork2ds={forkliftData.fork2ds}
+              fork2ds={forkliftData.fork2ds || forkliftData.fork2d || forkliftData.forks2d}
               selectedFork2d={selectedFork2d}
               onFork2dSel={handleFork2dSel}
             />
@@ -1065,9 +1087,14 @@ const ForkliftDetail = () => {
             />
           )}
 
-          {forkliftData.platforms && forkliftData.platforms.length > 0 && (
+          {(forkliftData.platforms?.length > 0 || 
+            (forkliftData.platform && Array.isArray(forkliftData.platform) && forkliftData.platform.length > 0) ||
+            (forkliftData.platform && typeof forkliftData.platform === 'object' && 
+             forkliftData.platform.platformtype)) && (
             <Platforms
-              platforms={forkliftData.platforms}
+              platforms={forkliftData.platforms || 
+                (Array.isArray(forkliftData.platform) ? forkliftData.platform : 
+                 (forkliftData.platform ? [forkliftData.platform] : []))}
               selectedPlatform={selectedPlatform}
               onPlatformSel={handlePlatformSel}
             />
@@ -1089,9 +1116,14 @@ const ForkliftDetail = () => {
             />
           )}
 
-          {forkliftData.steerings && forkliftData.steerings.length > 0 && (
+          {(forkliftData.steerings?.length > 0 || 
+            (forkliftData.steering && Array.isArray(forkliftData.steering) && forkliftData.steering.length > 0) ||
+            (forkliftData.steering && typeof forkliftData.steering === 'object' && 
+             forkliftData.steering.steeringtype)) && (
             <Steerings
-              steerings={forkliftData.steerings}
+              steerings={forkliftData.steerings || 
+                (Array.isArray(forkliftData.steering) ? forkliftData.steering : 
+                 (forkliftData.steering ? [forkliftData.steering] : []))}
               selectedSteering={selectedSteering}
               onSteeringSel={handleSteeringSel}
             />
@@ -1105,9 +1137,10 @@ const ForkliftDetail = () => {
             />
           )}
 
-          {forkliftData.stabilisers && forkliftData.stabilisers.length > 0 && (
+          {(forkliftData.stabilisers || forkliftData.stabiliser) && 
+           (forkliftData.stabilisers?.length > 0 || forkliftData.stabiliser?.length > 0) && (
             <Stabiliser
-              stabilisers={forkliftData.stabilisers}
+              stabilisers={forkliftData.stabilisers || forkliftData.stabiliser}
               selectedStabiliser={selectedStabiliser}
               onStabiliserSel={handleStabiliserSel}
             />
@@ -1131,17 +1164,27 @@ const ForkliftDetail = () => {
             />
           )}
 
-          {forkliftData.pincodes && forkliftData.pincodes.length > 0 && (
+          {(forkliftData.pincodes?.length > 0 || 
+            (forkliftData.pincode && Array.isArray(forkliftData.pincode) && forkliftData.pincode.length > 0) ||
+            (forkliftData.pincode && typeof forkliftData.pincode === 'object' && 
+             forkliftData.pincode.pincodetype)) && (
             <Pincode
-              pincodes={forkliftData.pincodes}
+              pincodes={forkliftData.pincodes || 
+                (Array.isArray(forkliftData.pincode) ? forkliftData.pincode : 
+                 (forkliftData.pincode ? [forkliftData.pincode] : []))}
               selectedPincode={selectedPincode}
               onPincodeSel={handlePincodeSel}
             />
           )}
 
-          {forkliftData.loadbackrests && forkliftData.loadbackrests.length > 0 && (
+          {(forkliftData.loadbackrests?.length > 0 || 
+            (forkliftData.loadbackrest && Array.isArray(forkliftData.loadbackrest) && forkliftData.loadbackrest.length > 0) ||
+            (forkliftData.loadbackrest && typeof forkliftData.loadbackrest === 'object' && 
+             forkliftData.loadbackrest.loadbackresttype !== undefined)) && (
             <Loadbackrests
-              loadbackrests={forkliftData.loadbackrests}
+              loadbackrests={forkliftData.loadbackrests || 
+                (Array.isArray(forkliftData.loadbackrest) ? forkliftData.loadbackrest : 
+                 (forkliftData.loadbackrest ? [forkliftData.loadbackrest] : []))}
               selectedLoadbackrest={selectedLoadbackrest}
               onLoadbackrestSel={handleLoadbackrestSel}
             />
