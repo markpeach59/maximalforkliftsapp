@@ -6,7 +6,6 @@ import "typeface-roboto";
 
 const RegisterDealerForm = () => {
   const [dealername, setDealername] = useState({ value: null, error: false, helperText: null });
-  const [dealermarkup, setDealermarkup] = useState({ value: null, error: false, helperText: null });
   
   const dealernameInputRef = useRef(null);
 

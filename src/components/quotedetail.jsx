@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import ForkliftImg from "./forkliftimg";
 import {
@@ -14,7 +14,6 @@ import "typeface-roboto";
 const QuoteDetail = () => {
   const [quoteData, setQuoteData] = useState({});
   const params = useParams();
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchQuoteDetail = async () => {
