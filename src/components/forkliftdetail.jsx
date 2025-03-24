@@ -14,6 +14,7 @@ import ResetOptions from "./resetoptions";
 import QuoteSave from "./quotesave";
 import Markup from "./markup";
 import Offertext from "./offertext";
+import Offer from "./offer";
 import Voltage from "./voltage";
 import Chassis from "./chassis";
 import Engines from "./engines";
@@ -306,6 +307,7 @@ const ForkliftDetail = () => {
       powertrain: forkliftData.powertrain,
       baseprice: baseprice,
       imgname: forkliftData.imgName, // Include the image name
+      offer: forkliftData.offer,
       
       // Include all selected options as individual fields
       masttype: selectedMast || "",
@@ -933,6 +935,83 @@ const ForkliftDetail = () => {
             <strong>
               Quote Price: £{totalprice + parseInt(markup)}
             </strong>
+            {/* Calculate discount based on various conditions */}
+            {(() => {
+              const finalPrice = totalprice + parseInt(markup);
+              let saving = 0;
+              let showOffer = false;
+              let isBigger = false;
+              
+              // Default 10% discount if there's an offer and a default battery
+              if (forkliftData.offer && forkliftData.defaultbattery) {
+                saving = Math.round(finalPrice * 0.10);
+                showOffer = true;
+              }
+              
+              // 15% discount if there's an offer and a selected battery
+              if (forkliftData.offer && selectedBattery) {
+                saving = Math.round(finalPrice * 0.15);
+                showOffer = true;
+                isBigger = true;
+              }
+              
+              // 3% discount specifically for the FBAX50-YWL model
+              if (forkliftData.model === 'FBAX50-YWL') {
+                saving = Math.round(finalPrice * 0.03);
+                showOffer = true;
+                isBigger = false;
+              }
+              
+              // 15% discount for voltage with label starting with 'S' (Standard)
+              if (selectedVoltage && selectedVoltage.label && selectedVoltage.label[0] === 'S') {
+                saving = Math.round(finalPrice * 0.15);
+                showOffer = true;
+                isBigger = true;
+              }
+              
+              // 10% discount for voltage with label starting with 'H' (Heavy)
+              if (selectedVoltage && selectedVoltage.label && selectedVoltage.label[0] === 'H') {
+                saving = Math.round(finalPrice * 0.10);
+                showOffer = true;
+                isBigger = false;
+              }
+              
+              // 2.5% discount for AA Series models
+              if (forkliftData.modeldescription && 
+                  forkliftData.modeldescription[0] && 
+                  forkliftData.modeldescription[0].description === 'AA Series') {
+                saving = Math.round(finalPrice * 0.025);
+                showOffer = true;
+                isBigger = false;
+              }
+              
+              // 3% discount for Lithium Version chassis
+              if (selectedChassis && selectedChassis.label === 'Lithium Version') {
+                saving = Math.round(finalPrice * 0.03);
+                showOffer = true;
+                isBigger = false;
+              }
+              
+              // No discount for voltage with label starting with 'L' (Light)
+              if (selectedVoltage && selectedVoltage.label && selectedVoltage.label[0] === 'L') {
+                saving = 0;
+                showOffer = false;
+              }
+              
+              // Return the Offer component if there's a discount to show
+              if (showOffer && saving > 0) {
+                return (
+                  <Offer 
+                    price={finalPrice} 
+                    offeron={true} 
+                    bigger={isBigger}
+                    model={forkliftData.model} 
+                  />
+                );
+              }
+              
+              return null;
+            })()}
           </div>
           
           <div>
