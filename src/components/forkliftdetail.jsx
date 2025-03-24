@@ -362,11 +362,85 @@ const ForkliftDetail = () => {
 
   const handleChassisSel = (chassis) => {
     setSelectedChassis(chassis);
+    
+    // For reach models, batteries are nested inside chassis
+    if (chassis && chassis.batteries) {
+      console.log("Chassis has batteries:", chassis.batteries);
+      
+      // Log the structure of the batteries array for debugging
+      console.log("Battery structure:", JSON.stringify(chassis.batteries));
+      
+      // For reach models, we need to ensure the batteries array is properly formatted
+      // The battery component expects an array of battery objects with _id and batterytype properties
+      const formattedBatteries = chassis.batteries.map((battery, index) => {
+        // Create a new battery object with required properties
+        return {
+          ...battery,
+          _id: `battery-${index}-${Date.now()}`, // Ensure each battery has a unique _id
+          batterytype: battery.batterytype || `Battery ${index + 1}`, // Ensure batterytype exists
+          price: battery.price || 0 // Ensure price exists
+        };
+      });
+      
+      console.log("Formatted batteries:", JSON.stringify(formattedBatteries));
+      
+      // Create a direct reference to the batteries for debugging
+      window.debugBatteries = formattedBatteries;
+      console.log("Debug batteries set to window.debugBatteries");
+      
+      // If this is a reach model with batteries in the chassis, update the forkliftData
+      // We need to use a callback to ensure we're working with the latest state
+      setForkliftData(prevData => {
+        console.log("Updating forkliftData with batteries");
+        
+        // Create a new object with the updated battery property
+        // Use 'batterys' instead of 'battery' to match the component's expected prop name
+        const updatedData = {
+          ...prevData,
+          battery: formattedBatteries,
+          batterys: formattedBatteries // Add both singular and plural forms
+        };
+        
+        console.log("Updated forklift data:", updatedData);
+        return updatedData;
+      });
+      
+      // Reset selected battery and charger when chassis changes
+      setSelectedBattery(null);
+      setSelectedCharger(null);
+      
+      // Enable battery selection
+      setBatteryconstraint(false);
+      
+      // Make batteries available for selection but don't auto-select
+      console.log("Making batteries available for selection");
+      
+      // If the battery has chargers, update the forkliftData with them
+      if (chassis.batteries.length === 1 && chassis.batteries[0].chargers) {
+        console.log("Battery has chargers:", chassis.batteries[0].chargers);
+        setForkliftData(prevData => ({
+          ...prevData,
+          charger: chassis.batteries[0].chargers
+        }));
+      }
+    }
+    
     updateTotalPrice(chassis, selectedChassis);
   };
 
   const handleEngineSel = (engine) => {
     setSelectedEngine(engine);
+    
+    // Reset battery constraint when engine type is lead acid or lithium
+    if (engine && (engine.enginetype.toLowerCase().includes('lead acid') || 
+                   engine.enginetype.toLowerCase().includes('lithium'))) {
+      setBatteryconstraint(false);
+      console.log("Engine selected is lead acid or lithium, enabling battery selection");
+    } else {
+      setBatteryconstraint(true);
+      console.log("Engine selected is not lead acid or lithium, disabling battery selection");
+    }
+    
     updateTotalPrice(engine, selectedEngine);
   };
 
@@ -1057,10 +1131,9 @@ const ForkliftDetail = () => {
             />
           )}
 
-          {(forkliftData.pincodes || forkliftData.pincode) && 
-           (forkliftData.pincodes?.length > 0 || forkliftData.pincode?.length > 0) && (
+          {forkliftData.pincodes && forkliftData.pincodes.length > 0 && (
             <Pincode
-              pincodes={forkliftData.pincodes || forkliftData.pincode}
+              pincodes={forkliftData.pincodes}
               selectedPincode={selectedPincode}
               onPincodeSel={handlePincodeSel}
             />
@@ -1094,27 +1167,29 @@ const ForkliftDetail = () => {
             />
           )}
 
-          {(forkliftData.batterys || forkliftData.batteries) && 
-           (forkliftData.batterys?.length > 0 || forkliftData.batteries?.length > 0) && (
+          {(forkliftData.batterys || forkliftData.batteries || forkliftData.battery) && 
+           (forkliftData.batterys?.length > 0 || forkliftData.batteries?.length > 0 || forkliftData.battery?.length > 0) && (
             <Batterys
-              batterys={forkliftData.batterys || forkliftData.batteries}
+              batterys={forkliftData.batterys || forkliftData.batteries || forkliftData.battery}
               selectedBattery={selectedBattery}
               onBatterySel={handleBatterySel}
               batteryConstraint={batteryconstraint}
             />
           )}
 
-          {forkliftData.chargers && forkliftData.chargers.length > 0 && (
+          {(forkliftData.chargers || forkliftData.charger) && 
+           (forkliftData.chargers?.length > 0 || forkliftData.charger?.length > 0) && (
             <Chargers
-              chargers={forkliftData.chargers}
+              chargers={forkliftData.chargers || forkliftData.charger}
               selectedCharger={selectedCharger}
               onChargerSel={handleChargerSel}
             />
           )}
 
-          {forkliftData.spares && forkliftData.spares.length > 0 && (
+          {(forkliftData.spares || forkliftData.spare) && 
+           (forkliftData.spares?.length > 0 || forkliftData.spare?.length > 0) && (
             <Sparebatteries
-              spares={forkliftData.spares}
+              spares={forkliftData.spares || forkliftData.spare}
               selectedSpare={selectedSpare}
               onSpareSel={handleSpareSel}
             />
@@ -1147,9 +1222,10 @@ const ForkliftDetail = () => {
             />
           )}
 
-          {forkliftData.sideextractionbatterys && forkliftData.sideextractionbatterys.length > 0 && (
+          {(forkliftData.sideextractionbatterys || forkliftData.sideextractionbattery) && 
+           (forkliftData.sideextractionbatterys?.length > 0 || forkliftData.sideextractionbattery?.length > 0) && (
             <Sideextractionbatterys
-              sideextractionbatterys={forkliftData.sideextractionbatterys}
+              sideextractionbatterys={forkliftData.sideextractionbatterys || forkliftData.sideextractionbattery}
               selectedSideextractionbattery={selectedSideextractionbattery}
               onSideextractionbatterySel={handleSideextractionbatterySel}
             />
