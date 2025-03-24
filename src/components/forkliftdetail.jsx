@@ -1162,42 +1162,47 @@ const ForkliftDetail = () => {
             />
           )}
 
-          {forkliftData.heaters && forkliftData.heaters.length > 0 && (
+          {(forkliftData.heaters || forkliftData.heater) && 
+           (forkliftData.heaters?.length > 0 || forkliftData.heater?.length > 0) && (
             <Heaters
-              heaters={forkliftData.heaters}
+              heaters={forkliftData.heaters || forkliftData.heater}
               selectedHeater={selectedHeater}
               onHeaterSel={handleHeaterSel}
             />
           )}
 
-          {forkliftData.aircons && forkliftData.aircons.length > 0 && (
+          {(forkliftData.aircons || forkliftData.aircon) && 
+           (forkliftData.aircons?.length > 0 || forkliftData.aircon?.length > 0) && (
             <Aircons
-              aircons={forkliftData.aircons}
+              aircons={forkliftData.aircons || forkliftData.aircon}
               selectedAircon={selectedAircon}
               onAirconSel={handleAirconSel}
             />
           )}
 
-          {forkliftData.upsweptexhausts && forkliftData.upsweptexhausts.length > 0 && (
+          {(forkliftData.upsweptexhausts || forkliftData.upsweptexhaust) && 
+           (forkliftData.upsweptexhausts?.length > 0 || forkliftData.upsweptexhaust?.length > 0) && (
             <Upsweptexhausts
-              upsweptexhausts={forkliftData.upsweptexhausts}
+              upsweptexhausts={forkliftData.upsweptexhausts || forkliftData.upsweptexhaust}
               selectedUpsweptexhaust={selectedUpsweptexhaust}
               onUpsweptexhaustSel={handleUpsweptexhaustSel}
               selectedCabin={selectedCabin}
             />
           )}
 
-          {forkliftData.precleaners && forkliftData.precleaners.length > 0 && (
+          {(forkliftData.precleaners || forkliftData.precleaner) && 
+           (forkliftData.precleaners?.length > 0 || forkliftData.precleaner?.length > 0) && (
             <Precleaners
-              precleaners={forkliftData.precleaners}
+              precleaners={forkliftData.precleaners || forkliftData.precleaner}
               selectedPrecleaner={selectedPrecleaner}
               onPrecleanerSel={handlePrecleanerSel}
             />
           )}
 
-          {forkliftData.heavydutyairfilters && forkliftData.heavydutyairfilters.length > 0 && (
+          {(forkliftData.heavydutyairfilters || forkliftData.heavydutyairfilter) && 
+           (forkliftData.heavydutyairfilters?.length > 0 || forkliftData.heavydutyairfilter?.length > 0) && (
             <Heavydutyairfilters
-              heavydutyairfilters={forkliftData.heavydutyairfilters}
+              heavydutyairfilters={forkliftData.heavydutyairfilters || forkliftData.heavydutyairfilter}
               selectedHeavydutyairfilter={selectedHeavydutyairfilter}
               onHeavydutyairfilterSel={handleHeavydutyairfilterSel}
             />
