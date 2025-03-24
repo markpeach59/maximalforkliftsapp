@@ -768,17 +768,19 @@ const ForkliftDetail = () => {
             />
           )}
 
-          {forkliftData.sideshifts && forkliftData.sideshifts.length > 0 && (
+          {(forkliftData.sideshifts || forkliftData.sideshift) && 
+           (forkliftData.sideshifts?.length > 0 || forkliftData.sideshift?.length > 0) && (
             <SideShifts
-              sideshifts={forkliftData.sideshifts}
+              sideshifts={forkliftData.sideshifts || forkliftData.sideshift}
               selectedSideShift={selectedSideShift}
               onSideShiftSel={handleSideShiftSel}
             />
           )}
 
-          {forkliftData.forkpositioners && forkliftData.forkpositioners.length > 0 && (
+          {(forkliftData.forkpositioners || forkliftData.forkpositioner) && 
+           (forkliftData.forkpositioners?.length > 0 || forkliftData.forkpositioner?.length > 0) && (
             <Forkpositioners
-              forkpositioners={forkliftData.forkpositioners}
+              forkpositioners={forkliftData.forkpositioners || forkliftData.forkpositioner}
               selectedForkpositioner={selectedForkpositioner}
               onForkpositionerSel={handleForkpositionerSel}
             />
@@ -963,25 +965,28 @@ const ForkliftDetail = () => {
             />
           )}
 
-          {forkliftData.bfss && forkliftData.bfss.length > 0 && (
+          {(forkliftData.bfss || forkliftData.bfs) && 
+           (forkliftData.bfss?.length > 0 || forkliftData.bfs?.length > 0) && (
             <Bfs
-              bfss={forkliftData.bfss}
+              bfss={forkliftData.bfss || forkliftData.bfs}
               selectedBfs={selectedBfs}
               onBfsSel={handleBfsSel}
             />
           )}
 
-          {forkliftData.trolleys && forkliftData.trolleys.length > 0 && (
+          {(forkliftData.trolleys || forkliftData.trolley) && 
+           (forkliftData.trolleys?.length > 0 || forkliftData.trolley?.length > 0) && (
             <Trolley
-              trolleys={forkliftData.trolleys}
+              trolleys={forkliftData.trolleys || forkliftData.trolley}
               selectedTrolley={selectedTrolley}
               onTrolleySel={handleTrolleySel}
             />
           )}
 
-          {forkliftData.blinkeys && forkliftData.blinkeys.length > 0 && (
+          {(forkliftData.blinkeys || forkliftData.blinkey) && 
+           (forkliftData.blinkeys?.length > 0 || forkliftData.blinkey?.length > 0) && (
             <Blinkey
-              blinkeys={forkliftData.blinkeys}
+              blinkeys={forkliftData.blinkeys || forkliftData.blinkey}
               selectedBlinkey={selectedBlinkey}
               onBlinkeySel={handleBlinkeySel}
             />
